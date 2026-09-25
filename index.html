@@ -25,71 +25,118 @@
     <div class="mode-tabs" role="tablist" aria-label="Modo de juego">
       <button id="tab-daily" class="mode-tab is-active" role="tab" aria-selected="true">Diario</button>
       <button id="tab-unlimited" class="mode-tab" role="tab" aria-selected="false">Ilimitado</button>
+      <button id="tab-silhouette" class="mode-tab" role="tab" aria-selected="false">Silueta</button>
     </div>
   </header>
 
   <main class="app-main">
-    <section class="reveal-card" id="reveal-card">
-      <img id="reveal-sprite" class="reveal-sprite silhouette" src="" alt="Pokémon misterioso" hidden />
-      <div class="reveal-placeholder" id="reveal-placeholder">?</div>
-      <p id="reveal-name" class="reveal-name" hidden></p>
-    </section>
+    <div id="wordle-mode">
+      <section class="reveal-card" id="reveal-card">
+        <img id="reveal-sprite" class="reveal-sprite silhouette" src="" alt="Pokémon misterioso" hidden />
+        <div class="reveal-placeholder" id="reveal-placeholder">?</div>
+        <p id="reveal-name" class="reveal-name" hidden></p>
+      </section>
 
-    <section class="search-section">
-      <form id="guess-form" autocomplete="off">
-        <div class="search-box">
-          <input
-            id="guess-input"
-            type="text"
-            placeholder="Escribe el nombre de un Pokémon..."
-            aria-label="Nombre del Pokémon"
-            aria-autocomplete="list"
-            aria-expanded="false"
-            aria-controls="suggestions-list"
-          />
-          <ul id="suggestions-list" class="suggestions-list" hidden></ul>
+      <section class="search-section">
+        <form id="guess-form" class="inline-form" autocomplete="off">
+          <div class="search-box">
+            <input
+              id="guess-input"
+              class="text-input"
+              type="text"
+              placeholder="Escribe el nombre de un Pokémon..."
+              aria-label="Nombre del Pokémon"
+              aria-autocomplete="list"
+              aria-expanded="false"
+              aria-controls="suggestions-list"
+            />
+            <ul id="suggestions-list" class="suggestions-list" hidden></ul>
+          </div>
+          <button type="submit" id="guess-submit" class="primary-button">Adivinar</button>
+        </form>
+        <p id="attempts-counter" class="attempts-counter">Intento 0 / 8</p>
+        <p id="feedback-message" class="feedback-message" role="status"></p>
+      </section>
+
+      <section class="table-section">
+        <div class="table-scroll">
+          <table id="guesses-table">
+            <thead>
+              <tr>
+                <th>Pokémon</th>
+                <th>Tipo 1</th>
+                <th>Tipo 2</th>
+                <th>Generación</th>
+                <th>Etapa evol.</th>
+                <th>Color</th>
+              </tr>
+            </thead>
+            <tbody id="guesses-body"></tbody>
+          </table>
         </div>
-        <button type="submit" id="guess-submit">Adivinar</button>
-      </form>
-      <p id="attempts-counter" class="attempts-counter">Intento 0 / 8</p>
-      <p id="feedback-message" class="feedback-message" role="status"></p>
-    </section>
+      </section>
 
-    <section class="table-section">
-      <div class="table-scroll">
-        <table id="guesses-table">
-          <thead>
-            <tr>
-              <th>Pokémon</th>
-              <th>Tipo 1</th>
-              <th>Tipo 2</th>
-              <th>Generación</th>
-              <th>Etapa evol.</th>
-              <th>Color</th>
-            </tr>
-          </thead>
-          <tbody id="guesses-body"></tbody>
-        </table>
-      </div>
-    </section>
+      <section class="end-panel" id="end-panel" hidden>
+        <p id="end-message" class="end-message"></p>
+        <div class="end-actions">
+          <button id="share-button" type="button" hidden>Copiar resultado</button>
+          <button id="new-game-button" type="button" hidden>Nueva partida</button>
+        </div>
+      </section>
 
-    <section class="end-panel" id="end-panel" hidden>
-      <p id="end-message" class="end-message"></p>
-      <div class="end-actions">
-        <button id="share-button" type="button" hidden>Copiar resultado</button>
-        <button id="new-game-button" type="button" hidden>Nueva partida</button>
-      </div>
-    </section>
+      <section class="stats-panel" id="stats-panel">
+        <h2>Estadísticas (modo diario)</h2>
+        <div class="stats-grid">
+          <div><span id="stat-played">0</span><small>Jugadas</small></div>
+          <div><span id="stat-wins">0</span><small>Victorias</small></div>
+          <div><span id="stat-streak">0</span><small>Racha actual</small></div>
+          <div><span id="stat-max-streak">0</span><small>Mejor racha</small></div>
+        </div>
+      </section>
+    </div>
 
-    <section class="stats-panel" id="stats-panel">
-      <h2>Estadísticas (modo diario)</h2>
-      <div class="stats-grid">
-        <div><span id="stat-played">0</span><small>Jugadas</small></div>
-        <div><span id="stat-wins">0</span><small>Victorias</small></div>
-        <div><span id="stat-streak">0</span><small>Racha actual</small></div>
-        <div><span id="stat-max-streak">0</span><small>Mejor racha</small></div>
-      </div>
-    </section>
+    <div id="silhouette-mode" hidden>
+      <section class="reveal-card" id="silhouette-reveal-card">
+        <img id="silhouette-sprite" class="reveal-sprite silhouette" src="" alt="Pokémon misterioso" hidden />
+        <div class="reveal-placeholder" id="silhouette-placeholder">?</div>
+        <p id="silhouette-name" class="reveal-name" hidden></p>
+      </section>
+
+      <section class="search-section">
+        <form id="silhouette-form" class="inline-form" autocomplete="off">
+          <div class="search-box">
+            <input
+              id="silhouette-input"
+              class="text-input"
+              type="text"
+              placeholder="¿Quién es este Pokémon?"
+              aria-label="Nombre del Pokémon"
+              aria-autocomplete="list"
+              aria-expanded="false"
+              aria-controls="silhouette-suggestions"
+            />
+            <ul id="silhouette-suggestions" class="suggestions-list" hidden></ul>
+          </div>
+          <button type="submit" id="silhouette-submit" class="primary-button">Adivinar</button>
+        </form>
+        <p class="attempts-counter">Adivina el nombre por su silueta. Sin límite de intentos.</p>
+        <p id="silhouette-feedback" class="feedback-message" role="status"></p>
+        <div class="end-actions">
+          <button id="silhouette-reveal-button" type="button">Rendirse / ver respuesta</button>
+          <button id="silhouette-next-button" type="button" hidden>Siguiente ▶</button>
+        </div>
+      </section>
+
+      <section class="stats-panel">
+        <h2>Estadísticas (modo silueta)</h2>
+        <div class="stats-grid">
+          <div><span id="silhouette-stat-played">0</span><small>Jugadas</small></div>
+          <div><span id="silhouette-stat-correct">0</span><small>Aciertos</small></div>
+          <div><span id="silhouette-stat-streak">0</span><small>Racha</small></div>
+          <div><span id="silhouette-stat-max-streak">0</span><small>Mejor racha</small></div>
+        </div>
+      </section>
+    </div>
   </main>
 
   <footer class="app-footer">

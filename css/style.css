@@ -170,7 +170,7 @@ body {
   padding: 1rem;
 }
 
-#guess-form {
+.inline-form {
   display: flex;
   gap: 0.5rem;
 }
@@ -180,7 +180,7 @@ body {
   flex: 1;
 }
 
-#guess-input {
+.text-input {
   width: 100%;
   padding: 0.6rem 0.75rem;
   font-family: var(--font-body);
@@ -191,7 +191,7 @@ body {
   color: var(--ink);
 }
 
-#guess-input:focus {
+.text-input:focus {
   outline: none;
   background: #fffef8;
 }
@@ -226,7 +226,7 @@ body {
   color: var(--green-ink);
 }
 
-#guess-submit {
+.primary-button {
   background: var(--shell-dark);
   color: var(--screen-bg);
   border: 2px solid var(--shell-dark);
@@ -238,7 +238,7 @@ body {
   cursor: pointer;
 }
 
-#guess-submit:disabled {
+.primary-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -254,6 +254,10 @@ body {
   color: var(--red);
   font-size: 1rem;
   margin: 0.3rem 0 0;
+}
+
+.feedback-message.is-success {
+  color: #2f7d32;
 }
 
 .table-section {

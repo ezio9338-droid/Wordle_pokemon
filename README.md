@@ -16,6 +16,11 @@ datos de los Pokémon en vivo a [PokeAPI](https://pokeapi.co).
   (se calcula de forma determinista a partir de la fecha), con 8 intentos.
 - **Ilimitado**: Pokémon aleatorio, puedes empezar una partida nueva cuando
   quieras con el botón "Nueva partida".
+- **Silueta**: modo de práctica para aprenderte los nombres. Se muestra la
+  silueta en negro de un Pokémon aleatorio (de toda la Pokédex) y hay que
+  escribir su nombre, sin límite de intentos. Al acertar o rendirte se
+  revela la imagen a color junto con su nombre y generación, para ir
+  ubicando qué Pokémon son de qué generación.
 
 Las estadísticas (partidas jugadas, victorias, racha actual y mejor racha) se
 guardan en el propio navegador (`localStorage`), por separado para cada modo.

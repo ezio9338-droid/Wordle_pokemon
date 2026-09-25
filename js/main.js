@@ -7,6 +7,9 @@ const STORAGE_PREFIX = "pokedle:v1:";
 const els = {
   tabDaily: document.getElementById("tab-daily"),
   tabUnlimited: document.getElementById("tab-unlimited"),
+  tabSilhouette: document.getElementById("tab-silhouette"),
+  wordleSection: document.getElementById("wordle-mode"),
+  silhouetteSection: document.getElementById("silhouette-mode"),
   revealSprite: document.getElementById("reveal-sprite"),
   revealPlaceholder: document.getElementById("reveal-placeholder"),
   revealName: document.getElementById("reveal-name"),
@@ -27,13 +30,47 @@ const els = {
   statStreak: document.getElementById("stat-streak"),
   statMaxStreak: document.getElementById("stat-max-streak"),
   maxAttemptsLabel: document.getElementById("max-attempts-label"),
+  silhouetteSprite: document.getElementById("silhouette-sprite"),
+  silhouettePlaceholder: document.getElementById("silhouette-placeholder"),
+  silhouetteName: document.getElementById("silhouette-name"),
+  silhouetteForm: document.getElementById("silhouette-form"),
+  silhouetteInput: document.getElementById("silhouette-input"),
+  silhouetteSuggestions: document.getElementById("silhouette-suggestions"),
+  silhouetteSubmit: document.getElementById("silhouette-submit"),
+  silhouetteFeedback: document.getElementById("silhouette-feedback"),
+  silhouetteRevealButton: document.getElementById("silhouette-reveal-button"),
+  silhouetteNextButton: document.getElementById("silhouette-next-button"),
+  silhouetteStatPlayed: document.getElementById("silhouette-stat-played"),
+  silhouetteStatCorrect: document.getElementById("silhouette-stat-correct"),
+  silhouetteStatStreak: document.getElementById("silhouette-stat-streak"),
+  silhouetteStatMaxStreak: document.getElementById("silhouette-stat-max-streak"),
 };
 
 els.maxAttemptsLabel.textContent = String(MAX_ATTEMPTS);
 
 let mode = "daily"; // "daily" | "unlimited"
 let nameList = [];
-let activeSuggestionIndex = -1;
+
+function statsKey(forMode) {
+  return `${STORAGE_PREFIX}${forMode}:stats`;
+}
+
+function loadStatsFor(forMode) {
+  try {
+    const raw = localStorage.getItem(statsKey(forMode));
+    return raw ? JSON.parse(raw) : { played: 0, wins: 0, streak: 0, maxStreak: 0 };
+  } catch {
+    return { played: 0, wins: 0, streak: 0, maxStreak: 0 };
+  }
+}
+
+function saveStatsFor(forMode, statsValue) {
+  try {
+    localStorage.setItem(statsKey(forMode), JSON.stringify(statsValue));
+  } catch {
+    /* ignorar */
+  }
+}
 
 function storageKey(suffix) {
   return `${STORAGE_PREFIX}${mode}:${suffix}`;
@@ -57,20 +94,11 @@ function saveState(state) {
 }
 
 function loadStats() {
-  try {
-    const raw = localStorage.getItem(storageKey("stats"));
-    return raw ? JSON.parse(raw) : { played: 0, wins: 0, streak: 0, maxStreak: 0 };
-  } catch {
-    return { played: 0, wins: 0, streak: 0, maxStreak: 0 };
-  }
+  return loadStatsFor(mode);
 }
 
-function saveStats(stats) {
-  try {
-    localStorage.setItem(storageKey("stats"), JSON.stringify(stats));
-  } catch {
-    /* ignorar */
-  }
+function saveStats(statsValue) {
+  saveStatsFor(mode, statsValue);
 }
 
 function freshState() {
@@ -270,7 +298,7 @@ async function handleGuessSubmit(event) {
     updateAttemptsCounter();
     setFeedback("");
     els.input.value = "";
-    hideSuggestions();
+    wordleAutocomplete.hide();
 
     if (result.win || state.guessIds.length >= MAX_ATTEMPTS) {
       state.finished = true;
@@ -288,68 +316,90 @@ async function handleGuessSubmit(event) {
   }
 }
 
-function hideSuggestions() {
-  els.suggestions.hidden = true;
-  els.suggestions.innerHTML = "";
-  activeSuggestionIndex = -1;
-  els.input.setAttribute("aria-expanded", "false");
-}
+/**
+ * Autocompletado reutilizable: filtra `nameList` mientras se escribe y
+ * permite elegir con click o teclado (flechas + Enter).
+ */
+function setupAutocomplete({ input, list, onSelect }) {
+  let activeIndex = -1;
 
-function renderSuggestions(matches) {
-  if (matches.length === 0) {
-    hideSuggestions();
-    return;
+  function hide() {
+    list.hidden = true;
+    list.innerHTML = "";
+    activeIndex = -1;
+    input.setAttribute("aria-expanded", "false");
   }
-  els.suggestions.innerHTML = matches
-    .map((p, i) => `<li data-id="${p.id}" data-index="${i}">${p.name}</li>`)
-    .join("");
-  els.suggestions.hidden = false;
-  activeSuggestionIndex = -1;
-  els.input.setAttribute("aria-expanded", "true");
-}
 
-function handleInputChange() {
-  const value = els.input.value.trim().toLowerCase();
-  if (!value) {
-    hideSuggestions();
-    return;
+  function render(matches) {
+    if (matches.length === 0) {
+      hide();
+      return;
+    }
+    list.innerHTML = matches.map((p) => `<li>${p.name}</li>`).join("");
+    list.hidden = false;
+    activeIndex = -1;
+    input.setAttribute("aria-expanded", "true");
   }
-  const matches = nameList.filter((p) => p.name.toLowerCase().includes(value)).slice(0, 8);
-  renderSuggestions(matches);
-}
 
-function selectSuggestion(name) {
-  els.input.value = name;
-  hideSuggestions();
-  els.input.focus();
-}
-
-function handleSuggestionKeydown(event) {
-  const items = [...els.suggestions.querySelectorAll("li")];
-  if (els.suggestions.hidden || items.length === 0) return;
-
-  if (event.key === "ArrowDown") {
-    event.preventDefault();
-    activeSuggestionIndex = Math.min(activeSuggestionIndex + 1, items.length - 1);
-  } else if (event.key === "ArrowUp") {
-    event.preventDefault();
-    activeSuggestionIndex = Math.max(activeSuggestionIndex - 1, 0);
-  } else if (event.key === "Enter" && activeSuggestionIndex >= 0) {
-    event.preventDefault();
-    selectSuggestion(items[activeSuggestionIndex].textContent);
-    return;
-  } else {
-    return;
+  function select(name) {
+    input.value = name;
+    hide();
+    input.focus();
+    onSelect?.(name);
   }
-  items.forEach((li, i) => li.classList.toggle("is-active", i === activeSuggestionIndex));
+
+  input.addEventListener("input", () => {
+    const value = input.value.trim().toLowerCase();
+    if (!value) {
+      hide();
+      return;
+    }
+    const matches = nameList.filter((p) => p.name.toLowerCase().includes(value)).slice(0, 8);
+    render(matches);
+  });
+
+  input.addEventListener("keydown", (event) => {
+    const items = [...list.querySelectorAll("li")];
+    if (list.hidden || items.length === 0) return;
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      activeIndex = Math.min(activeIndex + 1, items.length - 1);
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      activeIndex = Math.max(activeIndex - 1, 0);
+    } else if (event.key === "Enter" && activeIndex >= 0) {
+      event.preventDefault();
+      select(items[activeIndex].textContent);
+      return;
+    } else {
+      return;
+    }
+    items.forEach((li, i) => li.classList.toggle("is-active", i === activeIndex));
+  });
+
+  input.addEventListener("blur", () => setTimeout(hide, 150));
+  list.addEventListener("mousedown", (event) => {
+    const li = event.target.closest("li");
+    if (li) select(li.textContent);
+  });
+
+  return { hide };
+}
+
+function setActiveTab(activeButton) {
+  for (const btn of [els.tabDaily, els.tabUnlimited, els.tabSilhouette]) {
+    const isActive = btn === activeButton;
+    btn.classList.toggle("is-active", isActive);
+    btn.setAttribute("aria-selected", String(isActive));
+  }
 }
 
 async function switchMode(newMode) {
   mode = newMode;
-  els.tabDaily.classList.toggle("is-active", mode === "daily");
-  els.tabDaily.setAttribute("aria-selected", String(mode === "daily"));
-  els.tabUnlimited.classList.toggle("is-active", mode === "unlimited");
-  els.tabUnlimited.setAttribute("aria-selected", String(mode === "unlimited"));
+  setActiveTab(mode === "daily" ? els.tabDaily : els.tabUnlimited);
+  els.wordleSection.hidden = false;
+  els.silhouetteSection.hidden = true;
 
   stats = loadStats();
   ensureState();
@@ -370,17 +420,154 @@ function copyShareText() {
   );
 }
 
+// ---- Modo Silueta: practicar el nombre de Pokémon aleatorios sin pistas ----
+
+let silhouetteTarget = null;
+let silhouetteFinished = false;
+let silhouetteStats = { played: 0, wins: 0, streak: 0, maxStreak: 0 };
+
+function normalizeGuessText(text) {
+  return text
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function namesMatch(typed, pokemon) {
+  const normalizedTyped = normalizeGuessText(typed);
+  return (
+    normalizedTyped === normalizeGuessText(pokemon.nameEn) || normalizedTyped === normalizeGuessText(pokemon.nameEs)
+  );
+}
+
+function renderSilhouetteStats() {
+  els.silhouetteStatPlayed.textContent = silhouetteStats.played;
+  els.silhouetteStatCorrect.textContent = silhouetteStats.wins;
+  els.silhouetteStatStreak.textContent = silhouetteStats.streak;
+  els.silhouetteStatMaxStreak.textContent = silhouetteStats.maxStreak;
+}
+
+function recordSilhouetteResult(correct) {
+  silhouetteStats.played += 1;
+  if (correct) {
+    silhouetteStats.wins += 1;
+    silhouetteStats.streak += 1;
+    silhouetteStats.maxStreak = Math.max(silhouetteStats.maxStreak, silhouetteStats.streak);
+  } else {
+    silhouetteStats.streak = 0;
+  }
+  saveStatsFor("silhouette", silhouetteStats);
+  renderSilhouetteStats();
+}
+
+function revealSilhouette() {
+  els.silhouetteSprite.hidden = false;
+  els.silhouetteSprite.src = silhouetteTarget.sprite ?? "";
+  els.silhouetteSprite.classList.remove("silhouette");
+  els.silhouettePlaceholder.hidden = true;
+  els.silhouetteName.hidden = false;
+  els.silhouetteName.textContent = `${silhouetteTarget.nameEs} · Gen ${silhouetteTarget.generation ?? "?"}`;
+  els.silhouetteInput.disabled = true;
+  els.silhouetteSubmit.disabled = true;
+  els.silhouetteRevealButton.hidden = true;
+  els.silhouetteNextButton.hidden = false;
+  silhouetteFinished = true;
+}
+
+function setSilhouetteFeedback(msg, success = false) {
+  els.silhouetteFeedback.textContent = msg ?? "";
+  els.silhouetteFeedback.classList.toggle("is-success", success);
+}
+
+async function loadNewSilhouette() {
+  silhouetteFinished = false;
+  setSilhouetteFeedback("Cargando un Pokémon nuevo...");
+  els.silhouetteInput.value = "";
+  els.silhouetteInput.disabled = true;
+  els.silhouetteSubmit.disabled = true;
+  els.silhouetteRevealButton.hidden = false;
+  els.silhouetteNextButton.hidden = true;
+  els.silhouetteName.hidden = true;
+  els.silhouetteName.textContent = "";
+  els.silhouetteSprite.hidden = true;
+  els.silhouetteSprite.classList.add("silhouette");
+  els.silhouettePlaceholder.hidden = false;
+
+  try {
+    const id = getRandomPokemonId(silhouetteTarget?.id ?? null);
+    silhouetteTarget = await getPokemon(id);
+    els.silhouettePlaceholder.hidden = true;
+    els.silhouetteSprite.hidden = false;
+    els.silhouetteSprite.src = silhouetteTarget.sprite ?? "";
+    els.silhouetteInput.disabled = false;
+    els.silhouetteSubmit.disabled = false;
+    setSilhouetteFeedback("");
+    els.silhouetteInput.focus();
+  } catch (err) {
+    console.error(err);
+    setSilhouetteFeedback("No se pudo cargar un Pokémon nuevo. Revisa tu conexión.");
+  }
+}
+
+function handleSilhouetteGuess(name) {
+  if (silhouetteFinished || !silhouetteTarget) return;
+  if (namesMatch(name, silhouetteTarget)) {
+    recordSilhouetteResult(true);
+    revealSilhouette();
+    setSilhouetteFeedback("¡Correcto!", true);
+  } else {
+    setSilhouetteFeedback("No es correcto, sigue intentando.");
+    els.silhouetteInput.value = "";
+    els.silhouetteInput.focus();
+  }
+}
+
+function handleSilhouetteSubmit(event) {
+  event.preventDefault();
+  const typed = els.silhouetteInput.value.trim();
+  if (!typed) return;
+  silhouetteAutocomplete.hide();
+  handleSilhouetteGuess(typed);
+}
+
+function handleSilhouetteGiveUp() {
+  if (silhouetteFinished || !silhouetteTarget) return;
+  recordSilhouetteResult(false);
+  revealSilhouette();
+  setSilhouetteFeedback(`Era ${silhouetteTarget.nameEs} (Gen ${silhouetteTarget.generation ?? "?"}).`);
+}
+
+async function switchToSilhouette() {
+  mode = "silhouette";
+  setActiveTab(els.tabSilhouette);
+  els.wordleSection.hidden = true;
+  els.silhouetteSection.hidden = false;
+
+  silhouetteStats = loadStatsFor("silhouette");
+  renderSilhouetteStats();
+
+  if (!silhouetteTarget) {
+    await loadNewSilhouette();
+  }
+}
+
+let wordleAutocomplete;
+let silhouetteAutocomplete;
+
 async function init() {
   els.form.addEventListener("submit", handleGuessSubmit);
-  els.input.addEventListener("input", handleInputChange);
-  els.input.addEventListener("keydown", handleSuggestionKeydown);
-  els.input.addEventListener("blur", () => setTimeout(hideSuggestions, 150));
-  els.suggestions.addEventListener("mousedown", (e) => {
-    const li = e.target.closest("li");
-    if (li) selectSuggestion(li.textContent);
-  });
+  wordleAutocomplete = setupAutocomplete({ input: els.input, list: els.suggestions });
+
+  els.silhouetteForm.addEventListener("submit", handleSilhouetteSubmit);
+  silhouetteAutocomplete = setupAutocomplete({ input: els.silhouetteInput, list: els.silhouetteSuggestions });
+  els.silhouetteRevealButton.addEventListener("click", handleSilhouetteGiveUp);
+  els.silhouetteNextButton.addEventListener("click", loadNewSilhouette);
+
   els.tabDaily.addEventListener("click", () => switchMode("daily"));
   els.tabUnlimited.addEventListener("click", () => switchMode("unlimited"));
+  els.tabSilhouette.addEventListener("click", () => switchToSilhouette());
   els.shareButton.addEventListener("click", copyShareText);
   els.newGameButton.addEventListener("click", startNewUnlimitedGame);
 
