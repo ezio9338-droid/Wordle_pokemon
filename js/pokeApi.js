@@ -13,6 +13,34 @@ const API_BASE = "https://pokeapi.co/api/v2";
 const CACHE_PREFIX = "pokedle:v2:";
 const memoryCache = new Map();
 
+/**
+ * Limpieza única de entradas antiguas guardadas por versiones anteriores
+ * del código, que guardaban en localStorage las respuestas completas de
+ * PokeAPI (identificables porque su clave es la URL entera). Esas entradas
+ * podían llenar la cuota de localStorage del navegador e impedir que se
+ * guardaran otras cosas de la web (como el progreso de One Piece). Solo
+ * hace falta ejecutarla una vez por navegador: en cuanto se borran, no
+ * vuelven a crearse.
+ */
+function cleanupLegacyRawCache() {
+  try {
+    const keysToRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(CACHE_PREFIX) && key.includes("://")) {
+        keysToRemove.push(key);
+      }
+    }
+    for (const key of keysToRemove) {
+      localStorage.removeItem(key);
+    }
+  } catch {
+    // localStorage no disponible: nada que limpiar
+  }
+}
+
+cleanupLegacyRawCache();
+
 function readCache(key) {
   if (memoryCache.has(key)) return memoryCache.get(key);
   try {
@@ -26,7 +54,11 @@ function readCache(key) {
   }
 }
 
-function writeCache(key, value) {
+function writeMemoryCache(key, value) {
+  memoryCache.set(key, value);
+}
+
+function writePersistentCache(key, value) {
   memoryCache.set(key, value);
   try {
     localStorage.setItem(CACHE_PREFIX + key, JSON.stringify(value));
@@ -41,7 +73,14 @@ async function fetchJson(url) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Error ${res.status} al pedir ${url}`);
   const data = await res.json();
-  writeCache(url, data);
+  // Las respuestas crudas de la API son muy pesadas (decenas de KB cada
+  // una: descripciones en todos los idiomas, movimientos, stats...) y solo
+  // hacen falta una vez, para construir el objeto normalizado de abajo.
+  // Guardarlas en localStorage llenaría la cuota del navegador enseguida
+  // (sobre todo con el modo Silueta) y haría fallar en silencio otros
+  // guardados de la web, como el del juego de One Piece. Por eso solo se
+  // guardan en memoria, no en localStorage.
+  writeMemoryCache(url, data);
   return data;
 }
 
@@ -114,7 +153,7 @@ export async function getPokemon(idOrName) {
     stage,
   };
 
-  writeCache(cacheKey, normalized);
+  writePersistentCache(cacheKey, normalized);
   return normalized;
 }
 
@@ -133,6 +172,6 @@ export async function getPokemonNameList() {
     return { id, name: entry.name };
   });
 
-  writeCache(cacheKey, list);
+  writePersistentCache(cacheKey, list);
   return list;
 }
