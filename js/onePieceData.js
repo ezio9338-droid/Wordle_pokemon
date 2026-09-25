@@ -141,4 +141,16 @@ export const CHARACTERS = [
   { id: 109, name: "Mr. 2 Bon Clay", arc: "Alabasta", affiliation: "Baroque Works", devilFruit: "Paramecia", race: "Humano", status: "Muerto" },
   { id: 110, name: "Mr. 3", arc: "Alabasta", affiliation: "Baroque Works", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
   { id: 111, name: "Stussy", arc: "Sabaody", affiliation: "CP0", devilFruit: "Ninguna", race: "Humano", status: "Vivo" }, // dato incierto: su naturaleza exacta (¿clon?) no queda del todo clara en el manga
+
+  // --- Piratas de Barbanegra ---
+
+  { id: 112, name: "Jesus Burgess", arc: "Marineford", affiliation: "Piratas de Barbanegra", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
+  { id: 113, name: "Van Augur", arc: "Marineford", affiliation: "Piratas de Barbanegra", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
+  { id: 114, name: "Doc Q", arc: "Marineford", affiliation: "Piratas de Barbanegra", devilFruit: "Ninguna", race: "Humano", status: "Vivo" }, // dato incierto: no tengo total seguridad de si tiene fruta propia
+  { id: 115, name: "Laffitte", arc: "Marineford", affiliation: "Piratas de Barbanegra", devilFruit: "Paramecia", race: "Humano", status: "Vivo" }, // dato incierto: se le ve levitar, pero no recuerdo el nombre exacto de su fruta
+  { id: 116, name: "Shiryu", arc: "Impel Down", affiliation: "Piratas de Barbanegra", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
+  { id: 117, name: "Avalo Pizarro", arc: "Marineford", affiliation: "Piratas de Barbanegra", devilFruit: "Paramecia", race: "Humano", status: "Vivo" }, // dato incierto: nombre exacto de su fruta
+  { id: 118, name: "Catarina Devon", arc: "Marineford", affiliation: "Piratas de Barbanegra", devilFruit: "Zoan", race: "Humano", status: "Vivo" }, // dato incierto: nombre exacto de su fruta
+  { id: 119, name: "Sanjuan Wolf", arc: "Marineford", affiliation: "Piratas de Barbanegra", devilFruit: "Ninguna", race: "Gigante", status: "Vivo" }, // dato incierto
+  { id: 120, name: "Vasco Shot", arc: "Marineford", affiliation: "Piratas de Barbanegra", devilFruit: "Ninguna", race: "Humano", status: "Vivo" }, // dato incierto
 ];
