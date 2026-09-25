@@ -39,7 +39,7 @@ export const CHARACTERS = [
   { id: 22, name: "Boa Hancock", arc: "Amazon Lily", affiliation: "Piratas Kuja", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
   { id: 23, name: "Dracule Mihawk", arc: "East Blue", affiliation: "Shichibukai", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
   { id: 24, name: "Doflamingo", arc: "Dressrosa", affiliation: "Piratas Donquixote", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
-  { id: 25, name: "Barbanegra", arc: "Jaya", affiliation: "Piratas de Barbanegra", devilFruit: "Logia", race: "Humano", status: "Vivo" },
+  { id: 25, name: "Kurohige", arc: "Jaya", affiliation: "Piratas de Kurohige", devilFruit: "Logia", race: "Humano", status: "Vivo" },
 
   { id: 26, name: "Shanks", arc: "Romance Dawn", affiliation: "Piratas Pelirrojos", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
   { id: 27, name: "Barbablanca", arc: "Marineford", affiliation: "Piratas de Barbablanca", devilFruit: "Paramecia", race: "Humano", status: "Muerto" },
@@ -142,15 +142,15 @@ export const CHARACTERS = [
   { id: 110, name: "Mr. 3", arc: "Alabasta", affiliation: "Baroque Works", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
   { id: 111, name: "Stussy", arc: "Sabaody", affiliation: "CP0", devilFruit: "Ninguna", race: "Humano", status: "Vivo" }, // dato incierto: su naturaleza exacta (¿clon?) no queda del todo clara en el manga
 
-  // --- Piratas de Barbanegra ---
+  // --- Piratas de Kurohige ---
 
-  { id: 112, name: "Jesus Burgess", arc: "Marineford", affiliation: "Piratas de Barbanegra", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
-  { id: 113, name: "Van Augur", arc: "Marineford", affiliation: "Piratas de Barbanegra", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
-  { id: 114, name: "Doc Q", arc: "Marineford", affiliation: "Piratas de Barbanegra", devilFruit: "Ninguna", race: "Humano", status: "Vivo" }, // dato incierto: no tengo total seguridad de si tiene fruta propia
-  { id: 115, name: "Laffitte", arc: "Marineford", affiliation: "Piratas de Barbanegra", devilFruit: "Paramecia", race: "Humano", status: "Vivo" }, // dato incierto: se le ve levitar, pero no recuerdo el nombre exacto de su fruta
-  { id: 116, name: "Shiryu", arc: "Impel Down", affiliation: "Piratas de Barbanegra", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
-  { id: 117, name: "Avalo Pizarro", arc: "Marineford", affiliation: "Piratas de Barbanegra", devilFruit: "Paramecia", race: "Humano", status: "Vivo" }, // dato incierto: nombre exacto de su fruta
-  { id: 118, name: "Catarina Devon", arc: "Marineford", affiliation: "Piratas de Barbanegra", devilFruit: "Zoan", race: "Humano", status: "Vivo" }, // dato incierto: nombre exacto de su fruta
-  { id: 119, name: "Sanjuan Wolf", arc: "Marineford", affiliation: "Piratas de Barbanegra", devilFruit: "Ninguna", race: "Gigante", status: "Vivo" }, // dato incierto
-  { id: 120, name: "Vasco Shot", arc: "Marineford", affiliation: "Piratas de Barbanegra", devilFruit: "Ninguna", race: "Humano", status: "Vivo" }, // dato incierto
+  { id: 112, name: "Jesus Burgess", arc: "Marineford", affiliation: "Piratas de Kurohige", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
+  { id: 113, name: "Van Augur", arc: "Marineford", affiliation: "Piratas de Kurohige", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
+  { id: 114, name: "Doc Q", arc: "Marineford", affiliation: "Piratas de Kurohige", devilFruit: "Ninguna", race: "Humano", status: "Vivo" }, // dato incierto: no tengo total seguridad de si tiene fruta propia
+  { id: 115, name: "Laffitte", arc: "Marineford", affiliation: "Piratas de Kurohige", devilFruit: "Paramecia", race: "Humano", status: "Vivo" }, // dato incierto: se le ve levitar, pero no recuerdo el nombre exacto de su fruta
+  { id: 116, name: "Shiryu", arc: "Impel Down", affiliation: "Piratas de Kurohige", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
+  { id: 117, name: "Avalo Pizarro", arc: "Marineford", affiliation: "Piratas de Kurohige", devilFruit: "Paramecia", race: "Humano", status: "Vivo" }, // dato incierto: nombre exacto de su fruta
+  { id: 118, name: "Catarina Devon", arc: "Marineford", affiliation: "Piratas de Kurohige", devilFruit: "Zoan", race: "Humano", status: "Vivo" }, // dato incierto: nombre exacto de su fruta
+  { id: 119, name: "Sanjuan Wolf", arc: "Marineford", affiliation: "Piratas de Kurohige", devilFruit: "Ninguna", race: "Gigante", status: "Vivo" }, // dato incierto
+  { id: 120, name: "Vasco Shot", arc: "Marineford", affiliation: "Piratas de Kurohige", devilFruit: "Ninguna", race: "Humano", status: "Vivo" }, // dato incierto
 ];
