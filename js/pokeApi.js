@@ -7,7 +7,10 @@ import { translateType, translateColor, generationNumber } from "./translations.
 export const MAX_DEX = 1025; // último número de Pokédex nacional soportado (Gen IX)
 
 const API_BASE = "https://pokeapi.co/api/v2";
-const CACHE_PREFIX = "pokedle:v1:";
+// Subir este número invalida la caché de datos de PokeAPI guardada en el
+// navegador (localStorage): úsalo cuando cambie cómo se calculan o
+// normalizan los datos, para que no se sigan sirviendo valores antiguos.
+const CACHE_PREFIX = "pokedle:v2:";
 const memoryCache = new Map();
 
 function readCache(key) {
