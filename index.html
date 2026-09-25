@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pokédle — ¿Quién es ese Pokémon?</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>Pokédle</h1>
+    <p class="subtitle">Adivina el Pokémon secreto en <span id="max-attempts-label">8</span> intentos</p>
+    <div class="mode-tabs" role="tablist" aria-label="Modo de juego">
+      <button id="tab-daily" class="mode-tab is-active" role="tab" aria-selected="true">Diario</button>
+      <button id="tab-unlimited" class="mode-tab" role="tab" aria-selected="false">Ilimitado</button>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <section class="reveal-card" id="reveal-card">
+      <img id="reveal-sprite" class="reveal-sprite silhouette" src="" alt="Pokémon misterioso" hidden />
+      <div class="reveal-placeholder" id="reveal-placeholder">?</div>
+      <p id="reveal-name" class="reveal-name" hidden></p>
+    </section>
+
+    <section class="search-section">
+      <form id="guess-form" autocomplete="off">
+        <div class="search-box">
+          <input
+            id="guess-input"
+            type="text"
+            placeholder="Escribe el nombre de un Pokémon..."
+            aria-label="Nombre del Pokémon"
+            aria-autocomplete="list"
+            aria-expanded="false"
+            aria-controls="suggestions-list"
+          />
+          <ul id="suggestions-list" class="suggestions-list" hidden></ul>
+        </div>
+        <button type="submit" id="guess-submit">Adivinar</button>
+      </form>
+      <p id="attempts-counter" class="attempts-counter">Intento 0 / 8</p>
+      <p id="feedback-message" class="feedback-message" role="status"></p>
+    </section>
+
+    <section class="table-section">
+      <div class="table-scroll">
+        <table id="guesses-table">
+          <thead>
+            <tr>
+              <th>Pokémon</th>
+              <th>Tipo 1</th>
+              <th>Tipo 2</th>
+              <th>Generación</th>
+              <th>Etapa evol.</th>
+              <th>Color</th>
+              <th>Hábitat</th>
+              <th>Categoría</th>
+            </tr>
+          </thead>
+          <tbody id="guesses-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="end-panel" id="end-panel" hidden>
+      <p id="end-message" class="end-message"></p>
+      <div class="end-actions">
+        <button id="share-button" type="button" hidden>Copiar resultado</button>
+        <button id="new-game-button" type="button" hidden>Nueva partida</button>
+      </div>
+    </section>
+
+    <section class="stats-panel" id="stats-panel">
+      <h2>Estadísticas (modo diario)</h2>
+      <div class="stats-grid">
+        <div><span id="stat-played">0</span><small>Jugadas</small></div>
+        <div><span id="stat-wins">0</span><small>Victorias</small></div>
+        <div><span id="stat-streak">0</span><small>Racha actual</small></div>
+        <div><span id="stat-max-streak">0</span><small>Mejor racha</small></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>Datos de <a href="https://pokeapi.co" target="_blank" rel="noopener">PokeAPI</a>. Proyecto no oficial, sin ánimo de lucro.</p>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
