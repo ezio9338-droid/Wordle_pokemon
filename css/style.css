@@ -1,15 +1,19 @@
 :root {
-  --pokeball-red: #ee1515;
-  --pokeball-dark: #222224;
-  --bg: #f4f6fa;
-  --card-bg: #ffffff;
-  --text: #1f2430;
-  --muted: #6b7280;
-  --green: #6aaa64;
-  --yellow: #c9b458;
-  --red: #d9534f;
-  --radius: 12px;
-  --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shell-top: #e3352c;
+  --shell-bottom: #a8241f;
+  --shell-dark: #24301c;
+  --screen-bg: #cddec0;
+  --screen-inner: #8fae7c;
+  --panel-bg: #eef5e4;
+  --ink: #24301c;
+  --muted-ink: #4c5c3c;
+  --green: #7fae56;
+  --green-ink: #14210a;
+  --yellow: #d9b23c;
+  --yellow-ink: #3a2c05;
+  --red: #c85a4a;
+  --font-display: "Press Start 2P", monospace;
+  --font-body: "VT323", "Courier New", monospace;
 }
 
 * {
@@ -18,64 +22,113 @@
 
 body {
   margin: 0;
-  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  min-height: 100vh;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: linear-gradient(180deg, var(--shell-top) 0%, var(--shell-bottom) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 12px 36px;
 }
 
 .app-header {
-  background: var(--pokeball-red);
-  color: white;
+  width: 100%;
+  max-width: 720px;
   text-align: center;
-  padding: 1.25rem 1rem 0.75rem;
+  padding: 4px 10px 16px;
+}
+
+.device-lights {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 4px;
+  margin-bottom: 10px;
+}
+
+.light {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid white;
+  background: #e34b4b;
+}
+
+.light-power {
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle at 30% 30%, #9fd8ff, #1560ff);
+  border-width: 3px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.light-red {
+  background: #e34b4b;
+}
+
+.light-yellow {
+  background: #f0d84b;
+}
+
+.light-green {
+  background: #4bbf6b;
 }
 
 .app-header h1 {
   margin: 0;
-  font-size: 2rem;
-  letter-spacing: 0.05em;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: white;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.25);
+  letter-spacing: 0.02em;
 }
 
 .subtitle {
-  margin: 0.25rem 0 1rem;
-  opacity: 0.9;
+  margin: 10px 0 14px;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .mode-tabs {
   display: inline-flex;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 999px;
-  padding: 0.25rem;
+  gap: 6px;
 }
 
 .mode-tab {
-  border: none;
-  background: transparent;
-  color: white;
-  padding: 0.4rem 1.1rem;
-  border-radius: 999px;
+  border: 2px solid var(--shell-dark);
+  background: var(--panel-bg);
+  color: var(--shell-dark);
+  padding: 6px 16px;
+  border-radius: 6px;
   cursor: pointer;
-  font-weight: 600;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  text-transform: uppercase;
 }
 
 .mode-tab.is-active {
-  background: white;
-  color: var(--pokeball-red);
+  background: var(--shell-dark);
+  color: var(--screen-bg);
 }
 
 .app-main {
+  width: 100%;
   max-width: 720px;
-  margin: 0 auto;
-  padding: 1rem;
+  background: var(--screen-bg);
+  border: 6px solid var(--shell-dark);
+  border-radius: 16px;
+  box-shadow: inset 0 0 0 3px var(--screen-inner);
+  padding: 18px;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 14px;
 }
 
 .reveal-card {
-  background: var(--card-bg);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  background: var(--panel-bg);
+  border: 2px solid var(--shell-dark);
+  border-radius: 8px;
   padding: 1rem;
   text-align: center;
   min-height: 140px;
@@ -97,22 +150,23 @@ body {
 }
 
 .reveal-placeholder {
-  font-size: 3rem;
-  font-weight: 800;
-  color: var(--pokeball-dark);
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  color: var(--shell-dark);
 }
 
 .reveal-name {
   margin: 0.5rem 0 0;
-  font-weight: 700;
-  font-size: 1.25rem;
-  text-transform: capitalize;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: var(--shell-dark);
+  text-transform: uppercase;
 }
 
 .search-section {
-  background: var(--card-bg);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  background: var(--panel-bg);
+  border: 2px solid var(--shell-dark);
+  border-radius: 8px;
   padding: 1rem;
 }
 
@@ -129,14 +183,17 @@ body {
 #guess-input {
   width: 100%;
   padding: 0.6rem 0.75rem;
-  font-size: 1rem;
-  border: 2px solid #dfe3ea;
-  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  border: 2px solid var(--shell-dark);
+  border-radius: 6px;
+  background: white;
+  color: var(--ink);
 }
 
 #guess-input:focus {
   outline: none;
-  border-color: var(--pokeball-red);
+  background: #fffef8;
 }
 
 .suggestions-list {
@@ -145,36 +202,39 @@ body {
   left: 0;
   right: 0;
   background: white;
-  border: 1px solid #dfe3ea;
-  border-radius: 8px;
+  border: 2px solid var(--shell-dark);
+  border-radius: 6px;
   max-height: 220px;
   overflow-y: auto;
   list-style: none;
   margin: 0;
   padding: 0.25rem;
-  box-shadow: var(--shadow);
   z-index: 10;
 }
 
 .suggestions-list li {
   padding: 0.5rem 0.6rem;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
   text-transform: capitalize;
+  font-size: 1.1rem;
 }
 
 .suggestions-list li.is-active,
 .suggestions-list li:hover {
-  background: #fde8e8;
+  background: var(--green);
+  color: var(--green-ink);
 }
 
 #guess-submit {
-  background: var(--pokeball-red);
-  color: white;
-  border: none;
+  background: var(--shell-dark);
+  color: var(--screen-bg);
+  border: 2px solid var(--shell-dark);
   padding: 0 1.25rem;
-  border-radius: 8px;
-  font-weight: 700;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  text-transform: uppercase;
   cursor: pointer;
 }
 
@@ -185,21 +245,21 @@ body {
 
 .attempts-counter {
   margin: 0.6rem 0 0;
-  color: var(--muted);
-  font-size: 0.9rem;
+  color: var(--muted-ink);
+  font-size: 1rem;
 }
 
 .feedback-message {
   min-height: 1.2rem;
   color: var(--red);
-  font-size: 0.9rem;
+  font-size: 1rem;
   margin: 0.3rem 0 0;
 }
 
 .table-section {
-  background: var(--card-bg);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  background: var(--panel-bg);
+  border: 2px solid var(--shell-dark);
+  border-radius: 8px;
   padding: 0.5rem;
 }
 
@@ -214,17 +274,18 @@ body {
 }
 
 #guesses-table th {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--muted-ink);
   padding: 0.5rem;
   text-align: center;
+  letter-spacing: 0.03em;
 }
 
 #guesses-table td {
   text-align: center;
   padding: 0.4rem;
-  font-size: 0.85rem;
+  font-size: 1rem;
   vertical-align: middle;
 }
 
@@ -240,44 +301,46 @@ body {
 .pokemon-cell img {
   width: 48px;
   height: 48px;
+  image-rendering: pixelated;
 }
 
 .cell {
-  border-radius: 8px;
-  padding: 0.5rem 0.3rem;
-  font-weight: 600;
-  color: white;
+  border: 2px solid var(--shell-dark);
+  border-radius: 4px;
+  padding: 0.4rem 0.3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.85rem;
 }
 
 .cell.status-green {
   background: var(--green);
+  color: var(--green-ink);
 }
 
 .cell.status-yellow {
   background: var(--yellow);
+  color: var(--yellow-ink);
 }
 
 .cell.status-red {
   background: var(--red);
-}
-
-.cell .arrow {
-  display: block;
-  font-size: 0.9rem;
+  color: white;
 }
 
 .end-panel {
-  background: var(--card-bg);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  background: var(--panel-bg);
+  border: 2px solid var(--shell-dark);
+  border-radius: 8px;
   padding: 1rem;
   text-align: center;
 }
 
 .end-message {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 700;
   margin: 0 0 0.75rem;
+  color: var(--ink);
 }
 
 .end-actions {
@@ -287,27 +350,30 @@ body {
 }
 
 .end-actions button {
-  border: none;
+  border: 2px solid var(--shell-dark);
   padding: 0.6rem 1.1rem;
-  border-radius: 8px;
-  font-weight: 700;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  text-transform: uppercase;
   cursor: pointer;
-  background: var(--pokeball-dark);
-  color: white;
+  background: var(--shell-dark);
+  color: var(--screen-bg);
 }
 
 .stats-panel {
-  background: var(--card-bg);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  background: var(--panel-bg);
+  border: 2px solid var(--shell-dark);
+  border-radius: 8px;
   padding: 1rem;
   text-align: center;
 }
 
 .stats-panel h2 {
   margin: 0 0 0.75rem;
-  font-size: 1rem;
-  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  color: var(--muted-ink);
 }
 
 .stats-grid {
@@ -316,31 +382,42 @@ body {
   gap: 0.5rem;
 }
 
+.stats-grid > div {
+  background: white;
+  border: 2px solid var(--shell-dark);
+  border-radius: 6px;
+  padding: 0.4rem 0.2rem;
+}
+
 .stats-grid span {
   display: block;
-  font-size: 1.4rem;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--ink);
 }
 
 .stats-grid small {
-  color: var(--muted);
-  font-size: 0.75rem;
+  color: var(--muted-ink);
+  font-size: 0.7rem;
+  text-transform: uppercase;
 }
 
 .app-footer {
   text-align: center;
-  color: var(--muted);
-  font-size: 0.8rem;
-  padding: 1.5rem 1rem 2rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+  padding: 1.25rem 1rem 0;
+  max-width: 720px;
 }
 
 .app-footer a {
-  color: var(--pokeball-red);
+  color: white;
+  font-weight: 700;
 }
 
 @media (max-width: 480px) {
   .app-header h1 {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
 
   .stats-grid {

@@ -47,17 +47,6 @@ function compareTypeSlots(guessTypes, secretTypes) {
   });
 }
 
-function compareOrdinal(guessValue, secretValue) {
-  if (guessValue === secretValue) {
-    return { value: guessValue, status: "green", direction: null };
-  }
-  return {
-    value: guessValue,
-    status: "red",
-    direction: secretValue > guessValue ? "up" : "down",
-  };
-}
-
 function compareCategorical(guessValue, secretValue) {
   return { value: guessValue, status: guessValue === secretValue ? "green" : "red" };
 }
@@ -71,10 +60,9 @@ export function compareGuess(secret, guess) {
     pokemon: guess,
     win: guess.id === secret.id,
     types: compareTypeSlots(guess.types, secret.types),
-    generation: compareOrdinal(guess.generation, secret.generation),
-    stage: compareOrdinal(guess.stage, secret.stage),
+    generation: compareCategorical(guess.generation, secret.generation),
+    stage: compareCategorical(guess.stage, secret.stage),
     color: compareCategorical(guess.colorEs, secret.colorEs),
-    habitat: compareCategorical(guess.habitatEs, secret.habitatEs),
     category: compareCategorical(guess.categoryEs, secret.categoryEs),
   };
 }

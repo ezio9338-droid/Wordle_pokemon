@@ -37,20 +37,6 @@ export const COLOR_ES = {
   yellow: "Amarillo",
 };
 
-export const HABITAT_ES = {
-  cave: "Cueva",
-  forest: "Bosque",
-  grassland: "Pradera",
-  mountain: "Montaña",
-  rare: "Raro",
-  rough_terrain: "Terreno abrupto",
-  sea: "Mar",
-  urban: "Urbano",
-  "waters-edge": "Orilla del agua",
-  waters_edge: "Orilla del agua",
-  desconocido: "Desconocido",
-};
-
 export const GENERATION_ES = {
   "generation-i": 1,
   "generation-ii": 2,
@@ -69,11 +55,6 @@ export function translateType(slug) {
 
 export function translateColor(slug) {
   return COLOR_ES[slug] ?? slug;
-}
-
-export function translateHabitat(slug) {
-  if (!slug) return "Desconocido";
-  return HABITAT_ES[slug] ?? slug;
 }
 
 export function generationNumber(slug) {

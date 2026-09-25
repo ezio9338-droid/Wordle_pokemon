@@ -1,10 +1,11 @@
 # Pokédle
 
 Un juego tipo Wordle para adivinar un Pokémon secreto. En cada intento se
-comparan sus tipos, generación, etapa evolutiva, color, hábitat y categoría
+comparan sus tipos, generación, etapa evolutiva, color y categoría
 (normal/legendario/mítico) contra el Pokémon secreto, con el mismo esquema de
 colores que Wordle (verde = coincide, amarillo = coincide parcialmente,
-rojo = no coincide) y flechas ↑/↓ quando el atributo es numérico.
+rojo = no coincide). No se dan pistas de si el secreto es "mayor" o "menor"
+en generación o etapa evolutiva, para mantener el reto.
 
 Es una web estática (HTML/CSS/JS puro, sin build ni backend) que consulta los
 datos de los Pokémon en vivo a [PokeAPI](https://pokeapi.co).

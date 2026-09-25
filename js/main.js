@@ -136,9 +136,8 @@ function renderStats() {
   els.statMaxStreak.textContent = stats.maxStreak;
 }
 
-function ordinalCellHtml(result, formatValue) {
-  const arrow = result.status === "red" ? `<span class="arrow">${result.direction === "up" ? "▲" : "▼"}</span>` : "";
-  return `<div class="cell status-${result.status}">${formatValue(result.value)}${arrow}</div>`;
+function formattedCategoricalCellHtml(result, formatValue) {
+  return `<div class="cell status-${result.status}">${formatValue(result.value)}</div>`;
 }
 
 function typeCellHtml(result) {
@@ -162,10 +161,9 @@ function renderGuessRow(result) {
     </td>
     <td>${typeCellHtml(result.types[0])}</td>
     <td>${typeCellHtml(result.types[1])}</td>
-    <td>${ordinalCellHtml(result.generation, (v) => `Gen ${v ?? "?"}`)}</td>
-    <td>${ordinalCellHtml(result.stage, (v) => stageLabel(v))}</td>
+    <td>${formattedCategoricalCellHtml(result.generation, (v) => `Gen ${v ?? "?"}`)}</td>
+    <td>${formattedCategoricalCellHtml(result.stage, (v) => stageLabel(v))}</td>
     <td>${categoricalCellHtml(result.color)}</td>
-    <td>${categoricalCellHtml(result.habitat)}</td>
     <td>${categoricalCellHtml(result.category)}</td>
   `;
   els.tbody.appendChild(tr);
@@ -176,7 +174,7 @@ function buildShareText() {
   const grid = rows
     .map((r) => {
       const cellEmoji = (status) => (status === "green" ? "🟩" : status === "yellow" ? "🟨" : "🟥");
-      return [...r.types, r.generation, r.stage, r.color, r.habitat, r.category].map((c) => cellEmoji(c.status)).join("");
+      return [...r.types, r.generation, r.stage, r.color, r.category].map((c) => cellEmoji(c.status)).join("");
     })
     .join("\n");
   const title = mode === "daily" ? `Pokédle diario ${todayKey()}` : "Pokédle (ilimitado)";
