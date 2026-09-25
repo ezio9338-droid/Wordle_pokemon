@@ -95,7 +95,7 @@ export const CHARACTERS = [
 
   { id: 68, name: "Pekoms", arc: "Whole Cake Island", affiliation: "Piratas de Big Mom", devilFruit: "Zoan", race: "Mink", status: "Vivo" },
 
-  { id: 69, name: "Vegapunk", arc: "Egghead", affiliation: "Gobierno Mundial", devilFruit: "Ninguna", race: "Humano", status: "Muerto" }, // dato incierto: su muerte en Egghead se narra de forma confusa (hay varios "Vegapunk")
+  { id: 69, name: "Vegapunk", arc: "Egghead", affiliation: "Gobierno Mundial", devilFruit: "Paramecia", race: "Humano", status: "Muerto" }, // dato incierto: su muerte en Egghead se narra de forma confusa (hay varios "Vegapunk")
   { id: 70, name: "Bonney", arc: "Sabaody", affiliation: "Piratas de Bonney", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
 
   // --- Ampliación ---
