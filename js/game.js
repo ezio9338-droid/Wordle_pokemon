@@ -63,6 +63,5 @@ export function compareGuess(secret, guess) {
     generation: compareCategorical(guess.generation, secret.generation),
     stage: compareCategorical(guess.stage, secret.stage),
     color: compareCategorical(guess.colorEs, secret.colorEs),
-    category: compareCategorical(guess.categoryEs, secret.categoryEs),
   };
 }

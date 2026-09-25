@@ -164,7 +164,6 @@ function renderGuessRow(result) {
     <td>${formattedCategoricalCellHtml(result.generation, (v) => `Gen ${v ?? "?"}`)}</td>
     <td>${formattedCategoricalCellHtml(result.stage, (v) => stageLabel(v))}</td>
     <td>${categoricalCellHtml(result.color)}</td>
-    <td>${categoricalCellHtml(result.category)}</td>
   `;
   els.tbody.appendChild(tr);
 }
@@ -174,7 +173,7 @@ function buildShareText() {
   const grid = rows
     .map((r) => {
       const cellEmoji = (status) => (status === "green" ? "🟩" : status === "yellow" ? "🟨" : "🟥");
-      return [...r.types, r.generation, r.stage, r.color, r.category].map((c) => cellEmoji(c.status)).join("");
+      return [...r.types, r.generation, r.stage, r.color].map((c) => cellEmoji(c.status)).join("");
     })
     .join("\n");
   const title = mode === "daily" ? `Pokédle diario ${todayKey()}` : "Pokédle (ilimitado)";

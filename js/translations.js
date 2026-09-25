@@ -61,12 +61,6 @@ export function generationNumber(slug) {
   return GENERATION_ES[slug] ?? null;
 }
 
-export function categoryLabel({ isLegendary, isMythical }) {
-  if (isMythical) return "Mítico";
-  if (isLegendary) return "Legendario";
-  return "Normal";
-}
-
 export const STAGE_LABELS = ["Sin evolución", "Primera fase", "Segunda fase", "Tercera fase"];
 
 export function stageLabel(stage) {

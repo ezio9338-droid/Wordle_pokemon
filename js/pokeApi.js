@@ -2,7 +2,7 @@
 // Todas las llamadas se hacen desde el navegador de quien juega, no hay
 // backend propio.
 
-import { translateType, translateColor, generationNumber, categoryLabel } from "./translations.js";
+import { translateType, translateColor, generationNumber } from "./translations.js";
 
 export const MAX_DEX = 1025; // último número de Pokédex nacional soportado (Gen IX)
 
@@ -108,9 +108,6 @@ export async function getPokemon(idOrName) {
     generation: generationNumber(species.generation.name),
     color: species.color?.name ?? null,
     colorEs: translateColor(species.color?.name),
-    isLegendary: species.is_legendary,
-    isMythical: species.is_mythical,
-    categoryEs: categoryLabel({ isLegendary: species.is_legendary, isMythical: species.is_mythical }),
     stage,
   };
 
