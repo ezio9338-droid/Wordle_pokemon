@@ -49,5 +49,6 @@ export function compareGuess(secret, guess) {
     affiliation: compareCategorical(guess.affiliation, secret.affiliation),
     devilFruit: compareCategorical(guess.devilFruit, secret.devilFruit),
     race: compareCategorical(guess.race, secret.race),
+    alive: compareCategorical(guess.status, secret.status),
   };
 }

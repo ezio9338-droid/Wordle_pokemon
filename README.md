@@ -31,13 +31,17 @@ guardan en el propio navegador (`localStorage`), por separado para cada modo.
 ## One Piece
 
 No existe una API pública equivalente a PokeAPI para One Piece, así que los
-datos son una lista compilada a mano (`js/onePieceData.js`) con los ~70
-personajes más conocidos hasta la saga de Egghead. En cada intento se
-compara el arco de primera aparición, la tripulación/afiliación, el tipo de
-fruta del diablo (Paramecia/Zoan/Logia/Ninguna) y la raza. Tiene modo
-**Diario** e **Ilimitado**, igual que Pokémon, pero sin modo Silueta (no hay
-una fuente de imágenes libres de derechos para los personajes, así que este
-modo se queda solo para Pokémon por ahora).
+datos son una lista compilada a mano (`js/onePieceData.js`) con más de 110
+personajes conocidos hasta la saga de Egghead. En cada intento se compara el
+arco de primera aparición, la tripulación/afiliación, el tipo de fruta del
+diablo (Paramecia/Zoan/Logia/Ninguna), la raza y si el personaje sigue
+vivo o no. Tiene modo **Diario** e **Ilimitado**, igual que Pokémon, pero
+sin modo Silueta (no hay una fuente de imágenes libres de derechos para los
+personajes, así que este modo se queda solo para Pokémon por ahora).
+
+Un puñado de datos muy recientes (saga de Egghead) están marcados en el
+propio fichero con el comentario `// dato incierto`, porque el manga los deja
+ambiguos incluso para los fans; corrígelos si tienes más información.
 
 Si detectas algún dato incorrecto de algún personaje, es fácil de corregir
 directamente en `js/onePieceData.js`.

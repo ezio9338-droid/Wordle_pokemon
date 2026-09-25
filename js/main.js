@@ -701,6 +701,7 @@ function opRenderGuessRow(result) {
     <td>${categoricalCellHtml(result.affiliation)}</td>
     <td>${categoricalCellHtml(result.devilFruit)}</td>
     <td>${categoricalCellHtml(result.race)}</td>
+    <td>${categoricalCellHtml(result.alive)}</td>
   `;
   opEls.tbody.prepend(tr);
 }
@@ -710,7 +711,7 @@ function opBuildShareText() {
   const grid = rows
     .map((r) => {
       const cellEmoji = (status) => (status === "green" ? "🟩" : "🟥");
-      return [r.arc, r.affiliation, r.devilFruit, r.race].map((c) => cellEmoji(c.status)).join("");
+      return [r.arc, r.affiliation, r.devilFruit, r.race, r.alive].map((c) => cellEmoji(c.status)).join("");
     })
     .join("\n");
   const title = opMode === "daily" ? `One Piecedle diario ${opTodayKey()}` : "One Piecedle (ilimitado)";
