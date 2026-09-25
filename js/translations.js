@@ -86,8 +86,8 @@ export function categoryLabel({ isLegendary, isMythical }) {
   return "Normal";
 }
 
-export const STAGE_LABELS = ["Básica", "1ª evolución", "2ª evolución", "3ª evolución"];
+export const STAGE_LABELS = ["Sin evolución", "Primera fase", "Segunda fase", "Tercera fase"];
 
 export function stageLabel(stage) {
-  return STAGE_LABELS[stage] ?? `Etapa ${stage + 1}`;
+  return STAGE_LABELS[stage] ?? `Fase ${stage}`;
 }

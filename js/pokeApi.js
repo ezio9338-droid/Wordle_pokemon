@@ -42,13 +42,31 @@ async function fetchJson(url) {
   return data;
 }
 
-function findEvolutionStage(chainNode, targetName, depth = 0) {
-  if (chainNode.species.name === targetName) return depth;
+/**
+ * Busca al Pokémon dentro de su cadena evolutiva y devuelve en qué posición
+ * está (depth) y si todavía puede evolucionar más (canEvolveFurther).
+ * Esto permite distinguir un Pokémon sin ninguna evolución (depth 0 y no
+ * puede evolucionar) de la primera fase de una familia con más evoluciones
+ * (depth 0 mas sí puede evolucionar).
+ */
+function findEvolutionNode(chainNode, targetName, depth = 0) {
+  if (chainNode.species.name === targetName) {
+    return { depth, canEvolveFurther: chainNode.evolves_to.length > 0 };
+  }
   for (const next of chainNode.evolves_to) {
-    const found = findEvolutionStage(next, targetName, depth + 1);
+    const found = findEvolutionNode(next, targetName, depth + 1);
     if (found !== null) return found;
   }
   return null;
+}
+
+/**
+ * Convierte (depth, canEvolveFurther) en una categoría de etapa evolutiva:
+ * 0 = sin evolución, 1 = primera fase, 2 = segunda fase, 3 = tercera fase...
+ */
+function evolutionStageCategory({ depth, canEvolveFurther }) {
+  if (depth === 0 && !canEvolveFurther) return 0; // sin evolución
+  return depth + 1;
 }
 
 function spanishName(names, fallback) {
@@ -70,7 +88,8 @@ export async function getPokemon(idOrName) {
   ]);
 
   const chain = await fetchJson(species.evolution_chain.url);
-  const stage = findEvolutionStage(chain.chain, species.name) ?? 0;
+  const evoNode = findEvolutionNode(chain.chain, species.name) ?? { depth: 0, canEvolveFurther: false };
+  const stage = evolutionStageCategory(evoNode);
 
   const types = pokemon.types
     .sort((a, b) => a.slot - b.slot)
