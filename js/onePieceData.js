@@ -22,7 +22,7 @@ export const CHARACTERS = [
   { id: 7, name: "Robin", arc: "Alabasta", affiliation: "Piratas de Sombrero de Paja", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
   { id: 8, name: "Franky", arc: "Water Seven", affiliation: "Piratas de Sombrero de Paja", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
   { id: 9, name: "Brook", arc: "Thriller Bark", affiliation: "Piratas de Sombrero de Paja", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
-  { id: 10, name: "Jinbe", arc: "Arlong Park", affiliation: "Piratas de Sombrero de Paja", devilFruit: "Ninguna", race: "Pez-hombre", status: "Vivo" },
+  { id: 10, name: "Jinbe", arc: "Impel Down", affiliation: "Piratas de Sombrero de Paja", devilFruit: "Ninguna", race: "Pez-hombre", status: "Vivo" },
 
   { id: 11, name: "Buggy", arc: "Romance Dawn", affiliation: "Piratas de Buggy", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
   { id: 12, name: "Arlong", arc: "Arlong Park", affiliation: "Piratas de Arlong", devilFruit: "Ninguna", race: "Pez-hombre", status: "Vivo" },
@@ -32,7 +32,7 @@ export const CHARACTERS = [
   { id: 16, name: "Enel", arc: "Skypiea", affiliation: "Autoproclamado dios de Skypiea", devilFruit: "Logia", race: "Humano", status: "Vivo" },
   { id: 17, name: "Rob Lucci", arc: "Water Seven", affiliation: "CP9", devilFruit: "Zoan", race: "Humano", status: "Vivo" },
   { id: 18, name: "Kaku", arc: "Water Seven", affiliation: "CP9", devilFruit: "Zoan", race: "Humano", status: "Vivo" },
-  { id: 19, name: "Spandam", arc: "Enies Lobby", affiliation: "CP9", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
+  { id: 19, name: "Spandam", arc: "Water Seven", affiliation: "CP9", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
   { id: 20, name: "Gecko Moria", arc: "Thriller Bark", affiliation: "Piratas de Moria", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
 
   { id: 21, name: "Bartholomew Kuma", arc: "Thriller Bark", affiliation: "Shichibukai", devilFruit: "Paramecia", race: "Humano", status: "Muerto" }, // dato incierto: su final en Egghead es ambiguo en el manga
@@ -46,13 +46,13 @@ export const CHARACTERS = [
   { id: 28, name: "Big Mom", arc: "Whole Cake Island", affiliation: "Piratas de Big Mom", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
   { id: 29, name: "Kaido", arc: "Wano", affiliation: "Piratas de las Bestias", devilFruit: "Zoan", race: "Humano", status: "Vivo" },
 
-  { id: 30, name: "Sengoku", arc: "Marineford", affiliation: "Marina", devilFruit: "Zoan", race: "Humano", status: "Vivo" },
-  { id: 31, name: "Garp", arc: "Marineford", affiliation: "Marina", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
+  { id: 30, name: "Sengoku", arc: "Enies Lobby", affiliation: "Marina", devilFruit: "Zoan", race: "Humano", status: "Vivo" }, // dato incierto: podría tener alguna aparición aún antes
+  { id: 31, name: "Garp", arc: "Loguetown", affiliation: "Marina", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
   { id: 32, name: "Smoker", arc: "Loguetown", affiliation: "Marina", devilFruit: "Logia", race: "Humano", status: "Vivo" },
   { id: 33, name: "Tashigi", arc: "Loguetown", affiliation: "Marina", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
-  { id: 34, name: "Aokiji", arc: "Marineford", affiliation: "Ex Marina", devilFruit: "Logia", race: "Humano", status: "Vivo" },
+  { id: 34, name: "Aokiji", arc: "Alabasta", affiliation: "Ex Marina", devilFruit: "Logia", race: "Humano", status: "Vivo" },
   { id: 35, name: "Akainu", arc: "Marineford", affiliation: "Marina", devilFruit: "Logia", race: "Humano", status: "Vivo" },
-  { id: 36, name: "Kizaru", arc: "Marineford", affiliation: "Marina", devilFruit: "Logia", race: "Humano", status: "Vivo" },
+  { id: 36, name: "Kizaru", arc: "Sabaody", affiliation: "Marina", devilFruit: "Logia", race: "Humano", status: "Vivo" },
   { id: 37, name: "Fujitora", arc: "Dressrosa", affiliation: "Marina", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
   { id: 38, name: "Coby", arc: "Romance Dawn", affiliation: "Marina", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
   { id: 39, name: "Helmeppo", arc: "Romance Dawn", affiliation: "Marina", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
@@ -63,7 +63,7 @@ export const CHARACTERS = [
   { id: 43, name: "Koala", arc: "Punk Hazard", affiliation: "Ejército Revolucionario", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
 
   { id: 44, name: "Marco", arc: "Marineford", affiliation: "Piratas de Barbablanca", devilFruit: "Zoan", race: "Humano", status: "Vivo" },
-  { id: 45, name: "Ace", arc: "Marineford", affiliation: "Piratas de Barbablanca", devilFruit: "Logia", race: "Humano", status: "Muerto" },
+  { id: 45, name: "Ace", arc: "Alabasta", affiliation: "Piratas de Barbablanca", devilFruit: "Logia", race: "Humano", status: "Muerto" },
   { id: 46, name: "Jozu", arc: "Marineford", affiliation: "Piratas de Barbablanca", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
 
   { id: 47, name: "Katakuri", arc: "Whole Cake Island", affiliation: "Piratas de Big Mom", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
@@ -88,7 +88,7 @@ export const CHARACTERS = [
   { id: 61, name: "Kozuki Oden", arc: "Wano", affiliation: "Clan Kozuki", devilFruit: "Ninguna", race: "Humano", status: "Muerto" },
   { id: 62, name: "Kin'emon", arc: "Punk Hazard", affiliation: "Clan Kozuki", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
   { id: 63, name: "Yamato", arc: "Wano", affiliation: "Ex Piratas de las Bestias", devilFruit: "Zoan", race: "Humano", status: "Vivo" },
-  { id: 64, name: "Momonosuke", arc: "Wano", affiliation: "Clan Kozuki", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
+  { id: 64, name: "Momonosuke", arc: "Punk Hazard", affiliation: "Clan Kozuki", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
   { id: 65, name: "Hiyori", arc: "Wano", affiliation: "Clan Kozuki", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
   { id: 66, name: "Denjiro", arc: "Wano", affiliation: "Clan Kozuki", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
   { id: 67, name: "Orochi", arc: "Wano", affiliation: "Shogunato de Wano", devilFruit: "Zoan", race: "Humano", status: "Muerto" },
@@ -106,11 +106,11 @@ export const CHARACTERS = [
   { id: 74, name: "Nojiko", arc: "Arlong Park", affiliation: "Sin afiliación", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
   { id: 75, name: "Zeff", arc: "Baratie", affiliation: "Restaurante Baratie", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
   { id: 76, name: "Kaya", arc: "Romance Dawn", affiliation: "Sin afiliación", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
-  { id: 77, name: "Tsuru", arc: "Marineford", affiliation: "Marina", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
+  { id: 77, name: "Tsuru", arc: "Enies Lobby", affiliation: "Marina", devilFruit: "Paramecia", race: "Humano", status: "Vivo" }, // dato incierto: igual que Sengoku, podría tener alguna aparición aún antes
   { id: 78, name: "Kalifa", arc: "Water Seven", affiliation: "CP9", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
   { id: 79, name: "Blueno", arc: "Water Seven", affiliation: "CP9", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
   { id: 80, name: "Vista", arc: "Marineford", affiliation: "Piratas de Barbablanca", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
-  { id: 81, name: "Izo", arc: "Wano", affiliation: "Piratas de Barbablanca", devilFruit: "Ninguna", race: "Humano", status: "Muerto" },
+  { id: 81, name: "Izo", arc: "Marineford", affiliation: "Piratas de Barbablanca", devilFruit: "Ninguna", race: "Humano", status: "Muerto" },
   { id: 82, name: "Perospero", arc: "Whole Cake Island", affiliation: "Piratas de Big Mom", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
   { id: 83, name: "Cracker", arc: "Whole Cake Island", affiliation: "Piratas de Big Mom", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
   { id: 84, name: "Pudding", arc: "Whole Cake Island", affiliation: "Piratas de Big Mom", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
@@ -136,8 +136,8 @@ export const CHARACTERS = [
   { id: 104, name: "King", arc: "Wano", affiliation: "Piratas de las Bestias", devilFruit: "Zoan", race: "Humano", status: "Vivo" }, // dato incierto: su raza (se insinúa "lunariano" pero nunca se confirma del todo)
   { id: 105, name: "Ashura Doji", arc: "Wano", affiliation: "Clan Kozuki", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
   { id: 106, name: "Kawamatsu", arc: "Wano", affiliation: "Clan Kozuki", devilFruit: "Zoan", race: "Humano", status: "Vivo" },
-  { id: 107, name: "Raizo", arc: "Wano", affiliation: "Clan Kozuki", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
-  { id: 108, name: "Kanjuro", arc: "Wano", affiliation: "Clan Kozuki (traidor)", devilFruit: "Ninguna", race: "Humano", status: "Muerto" },
+  { id: 107, name: "Raizo", arc: "Punk Hazard", affiliation: "Clan Kozuki", devilFruit: "Ninguna", race: "Humano", status: "Vivo" },
+  { id: 108, name: "Kanjuro", arc: "Punk Hazard", affiliation: "Clan Kozuki (traidor)", devilFruit: "Ninguna", race: "Humano", status: "Muerto" },
   { id: 109, name: "Mr. 2 Bon Clay", arc: "Alabasta", affiliation: "Baroque Works", devilFruit: "Paramecia", race: "Humano", status: "Muerto" },
   { id: 110, name: "Mr. 3", arc: "Alabasta", affiliation: "Baroque Works", devilFruit: "Paramecia", race: "Humano", status: "Vivo" },
   { id: 111, name: "Stussy", arc: "Sabaody", affiliation: "CP0", devilFruit: "Ninguna", race: "Humano", status: "Vivo" }, // dato incierto: su naturaleza exacta (¿clon?) no queda del todo clara en el manga
