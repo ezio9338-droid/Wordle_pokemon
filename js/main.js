@@ -193,7 +193,7 @@ function renderGuessRow(result) {
     <td>${formattedCategoricalCellHtml(result.stage, (v) => stageLabel(v))}</td>
     <td>${categoricalCellHtml(result.color)}</td>
   `;
-  els.tbody.appendChild(tr);
+  els.tbody.prepend(tr);
 }
 
 function buildShareText() {
