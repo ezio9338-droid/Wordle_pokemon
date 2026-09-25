@@ -13,6 +13,12 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+  <div class="franchise-tabs" role="tablist" aria-label="Franquicia">
+    <button id="franchise-pokemon" class="franchise-tab is-active" role="tab" aria-selected="true">Pokémon</button>
+    <button id="franchise-onepiece" class="franchise-tab" role="tab" aria-selected="false">One Piece</button>
+  </div>
+
+  <div id="pokemon-app">
   <header class="app-header">
     <div class="device-lights" aria-hidden="true">
       <span class="light light-power"></span>
@@ -138,9 +144,91 @@
       </section>
     </div>
   </main>
+  </div>
+
+  <div id="onepiece-app" hidden>
+  <header class="app-header">
+    <div class="device-lights" aria-hidden="true">
+      <span class="light light-power"></span>
+      <span class="light light-red"></span>
+      <span class="light light-yellow"></span>
+      <span class="light light-green"></span>
+    </div>
+    <h1>One Piecedle</h1>
+    <p class="subtitle">Adivina el personaje secreto en <span id="op-max-attempts-label">8</span> intentos</p>
+    <div class="mode-tabs" role="tablist" aria-label="Modo de juego">
+      <button id="op-tab-daily" class="mode-tab is-active" role="tab" aria-selected="true">Diario</button>
+      <button id="op-tab-unlimited" class="mode-tab" role="tab" aria-selected="false">Ilimitado</button>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <section class="reveal-card" id="op-reveal-card">
+      <div class="reveal-placeholder" id="op-reveal-placeholder">?</div>
+      <p id="op-reveal-name" class="reveal-name" hidden></p>
+    </section>
+
+    <section class="search-section">
+      <form id="op-guess-form" class="inline-form" autocomplete="off">
+        <div class="search-box">
+          <input
+            id="op-guess-input"
+            class="text-input"
+            type="text"
+            placeholder="Escribe el nombre de un personaje..."
+            aria-label="Nombre del personaje"
+            aria-autocomplete="list"
+            aria-expanded="false"
+            aria-controls="op-suggestions-list"
+          />
+          <ul id="op-suggestions-list" class="suggestions-list" hidden></ul>
+        </div>
+        <button type="submit" id="op-guess-submit" class="primary-button">Adivinar</button>
+      </form>
+      <p id="op-attempts-counter" class="attempts-counter">Intento 0 / 8</p>
+      <p id="op-feedback-message" class="feedback-message" role="status"></p>
+    </section>
+
+    <section class="table-section">
+      <div class="table-scroll">
+        <table id="op-guesses-table">
+          <thead>
+            <tr>
+              <th>Personaje</th>
+              <th>Arco</th>
+              <th>Tripulación</th>
+              <th>Fruta del diablo</th>
+              <th>Raza</th>
+            </tr>
+          </thead>
+          <tbody id="op-guesses-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="end-panel" id="op-end-panel" hidden>
+      <p id="op-end-message" class="end-message"></p>
+      <div class="end-actions">
+        <button id="op-share-button" type="button" hidden>Copiar resultado</button>
+        <button id="op-new-game-button" type="button" hidden>Nueva partida</button>
+      </div>
+    </section>
+
+    <section class="stats-panel">
+      <h2 id="op-stats-title">Estadísticas (modo diario)</h2>
+      <div class="stats-grid">
+        <div><span id="op-stat-played">0</span><small>Jugadas</small></div>
+        <div><span id="op-stat-wins">0</span><small>Victorias</small></div>
+        <div><span id="op-stat-streak">0</span><small>Racha actual</small></div>
+        <div><span id="op-stat-max-streak">0</span><small>Mejor racha</small></div>
+      </div>
+    </section>
+  </main>
+  </div>
 
   <footer class="app-footer">
-    <p>Datos de <a href="https://pokeapi.co" target="_blank" rel="noopener">PokeAPI</a>. Proyecto no oficial, sin ánimo de lucro.</p>
+    <p id="pokemon-footer-note">Datos de <a href="https://pokeapi.co" target="_blank" rel="noopener">PokeAPI</a>. Proyecto no oficial, sin ánimo de lucro.</p>
+    <p id="onepiece-footer-note" hidden>Datos de personajes compilados a mano a partir de la obra de Eiichiro Oda. Proyecto de fans, no oficial ni afiliado a Toei Animation/Shueisha.</p>
   </footer>
 
   <script type="module" src="js/main.js"></script>

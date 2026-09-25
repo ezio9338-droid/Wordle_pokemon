@@ -1,8 +1,18 @@
 import { getPokemon, getPokemonNameList } from "./pokeApi.js";
 import { compareGuess, getDailyPokemonId, getRandomPokemonId, todayKey, MAX_ATTEMPTS } from "./game.js";
 import { translateType, stageLabel } from "./translations.js";
+import {
+  compareGuess as compareOnePieceGuess,
+  getDailyCharacter,
+  getRandomCharacter,
+  getCharacterById,
+  todayKey as opTodayKey,
+  MAX_ATTEMPTS as OP_MAX_ATTEMPTS,
+} from "./onePieceGame.js";
+import { CHARACTERS as ONE_PIECE_CHARACTERS } from "./onePieceData.js";
 
 const STORAGE_PREFIX = "pokedle:v1:";
+const OP_STORAGE_PREFIX = "onepiece:v1:";
 
 const els = {
   tabDaily: document.getElementById("tab-daily"),
@@ -46,7 +56,43 @@ const els = {
   silhouetteStatMaxStreak: document.getElementById("silhouette-stat-max-streak"),
 };
 
+const franchiseEls = {
+  franchisePokemon: document.getElementById("franchise-pokemon"),
+  franchiseOnePiece: document.getElementById("franchise-onepiece"),
+  pokemonApp: document.getElementById("pokemon-app"),
+  onePieceApp: document.getElementById("onepiece-app"),
+  pokemonFooterNote: document.getElementById("pokemon-footer-note"),
+  onePieceFooterNote: document.getElementById("onepiece-footer-note"),
+};
+
+const opEls = {
+  tabDaily: document.getElementById("op-tab-daily"),
+  tabUnlimited: document.getElementById("op-tab-unlimited"),
+  revealPlaceholder: document.getElementById("op-reveal-placeholder"),
+  revealName: document.getElementById("op-reveal-name"),
+  form: document.getElementById("op-guess-form"),
+  input: document.getElementById("op-guess-input"),
+  suggestions: document.getElementById("op-suggestions-list"),
+  submit: document.getElementById("op-guess-submit"),
+  attemptsCounter: document.getElementById("op-attempts-counter"),
+  feedback: document.getElementById("op-feedback-message"),
+  tbody: document.getElementById("op-guesses-body"),
+  endPanel: document.getElementById("op-end-panel"),
+  endMessage: document.getElementById("op-end-message"),
+  shareButton: document.getElementById("op-share-button"),
+  newGameButton: document.getElementById("op-new-game-button"),
+  statsTitle: document.getElementById("op-stats-title"),
+  statPlayed: document.getElementById("op-stat-played"),
+  statWins: document.getElementById("op-stat-wins"),
+  statStreak: document.getElementById("op-stat-streak"),
+  statMaxStreak: document.getElementById("op-stat-max-streak"),
+  maxAttemptsLabel: document.getElementById("op-max-attempts-label"),
+};
+
 els.maxAttemptsLabel.textContent = String(MAX_ATTEMPTS);
+opEls.maxAttemptsLabel.textContent = String(OP_MAX_ATTEMPTS);
+
+const opNameList = ONE_PIECE_CHARACTERS.map((c) => ({ id: c.id, name: c.name }));
 
 let mode = "daily"; // "daily" | "unlimited"
 let nameList = [];
@@ -317,10 +363,11 @@ async function handleGuessSubmit(event) {
 }
 
 /**
- * Autocompletado reutilizable: filtra `nameList` mientras se escribe y
- * permite elegir con click o teclado (flechas + Enter).
+ * Autocompletado reutilizable: filtra la lista de candidatos que devuelva
+ * `getCandidates` mientras se escribe, y permite elegir con click o
+ * teclado (flechas + Enter).
  */
-function setupAutocomplete({ input, list, onSelect }) {
+function setupAutocomplete({ input, list, getCandidates, onSelect }) {
   let activeIndex = -1;
 
   function hide() {
@@ -354,7 +401,9 @@ function setupAutocomplete({ input, list, onSelect }) {
       hide();
       return;
     }
-    const matches = nameList.filter((p) => p.name.toLowerCase().includes(value)).slice(0, 8);
+    const matches = getCandidates()
+      .filter((p) => p.name.toLowerCase().includes(value))
+      .slice(0, 8);
     render(matches);
   });
 
@@ -553,15 +602,279 @@ async function switchToSilhouette() {
   }
 }
 
+// ==== One Piece: mismo juego, datos locales en vez de PokeAPI ====
+
+let opMode = "daily"; // "daily" | "unlimited"
+let opState = null;
+let opStats = null;
+
+function opStorageKey(suffix) {
+  return `${OP_STORAGE_PREFIX}${opMode}:${suffix}`;
+}
+
+function opLoadState() {
+  try {
+    const raw = localStorage.getItem(opStorageKey("state"));
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function opSaveState(value) {
+  try {
+    localStorage.setItem(opStorageKey("state"), JSON.stringify(value));
+  } catch {
+    /* la partida sigue en memoria */
+  }
+}
+
+function opStatsKey(forMode) {
+  return `${OP_STORAGE_PREFIX}${forMode}:stats`;
+}
+
+function opLoadStatsFor(forMode) {
+  try {
+    const raw = localStorage.getItem(opStatsKey(forMode));
+    return raw ? JSON.parse(raw) : { played: 0, wins: 0, streak: 0, maxStreak: 0 };
+  } catch {
+    return { played: 0, wins: 0, streak: 0, maxStreak: 0 };
+  }
+}
+
+function opSaveStats(value) {
+  try {
+    localStorage.setItem(opStatsKey(opMode), JSON.stringify(value));
+  } catch {
+    /* ignorar */
+  }
+}
+
+function opFreshState() {
+  const secret = opMode === "daily" ? getDailyCharacter() : getRandomCharacter();
+  return { date: opTodayKey(), secretId: secret.id, guessIds: [], finished: false, won: false };
+}
+
+function opEnsureState() {
+  const stored = opLoadState();
+  if (!stored || (opMode === "daily" && stored.date !== opTodayKey())) {
+    opState = opFreshState();
+    opSaveState(opState);
+    return;
+  }
+  opState = stored;
+}
+
+function opSetFeedback(msg) {
+  opEls.feedback.textContent = msg ?? "";
+}
+
+function opUpdateAttemptsCounter() {
+  opEls.attemptsCounter.textContent = `Intento ${opState.guessIds.length} / ${OP_MAX_ATTEMPTS}`;
+}
+
+function opSetRevealed(character) {
+  opEls.revealPlaceholder.hidden = true;
+  opEls.revealName.hidden = false;
+  opEls.revealName.textContent = character.name;
+}
+
+function opSetHidden() {
+  opEls.revealPlaceholder.hidden = false;
+  opEls.revealName.hidden = true;
+  opEls.revealName.textContent = "";
+}
+
+function opRenderStats() {
+  opEls.statsTitle.textContent = opMode === "daily" ? "Estadísticas (modo diario)" : "Estadísticas (modo ilimitado)";
+  opEls.statPlayed.textContent = opStats.played;
+  opEls.statWins.textContent = opStats.wins;
+  opEls.statStreak.textContent = opStats.streak;
+  opEls.statMaxStreak.textContent = opStats.maxStreak;
+}
+
+function opRenderGuessRow(result) {
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td><div class="pokemon-cell"><span>${result.character.name}</span></div></td>
+    <td>${categoricalCellHtml(result.arc)}</td>
+    <td>${categoricalCellHtml(result.affiliation)}</td>
+    <td>${categoricalCellHtml(result.devilFruit)}</td>
+    <td>${categoricalCellHtml(result.race)}</td>
+  `;
+  opEls.tbody.prepend(tr);
+}
+
+function opBuildShareText() {
+  const rows = opState.guessResultsCache ?? [];
+  const grid = rows
+    .map((r) => {
+      const cellEmoji = (status) => (status === "green" ? "🟩" : "🟥");
+      return [r.arc, r.affiliation, r.devilFruit, r.race].map((c) => cellEmoji(c.status)).join("");
+    })
+    .join("\n");
+  const title = opMode === "daily" ? `One Piecedle diario ${opTodayKey()}` : "One Piecedle (ilimitado)";
+  const resultLine = opState.won ? `${opState.guessIds.length}/${OP_MAX_ATTEMPTS}` : `X/${OP_MAX_ATTEMPTS}`;
+  return `${title} ${resultLine}\n${grid}`;
+}
+
+function opShowGameOverUI(secret, won) {
+  opSetRevealed(secret);
+  opEls.endPanel.hidden = false;
+  opEls.endMessage.textContent = won
+    ? `¡Correcto! Era ${secret.name}. Lo lograste en ${opState.guessIds.length} intento(s).`
+    : `Se acabaron los intentos. Era ${secret.name}.`;
+  opEls.shareButton.hidden = false;
+  opEls.newGameButton.hidden = opMode !== "unlimited";
+  opEls.input.disabled = true;
+  opEls.submit.disabled = true;
+}
+
+function opRecordGameResult(won) {
+  opStats.played += 1;
+  if (won) {
+    opStats.wins += 1;
+    opStats.streak += 1;
+    opStats.maxStreak = Math.max(opStats.maxStreak, opStats.streak);
+  } else {
+    opStats.streak = 0;
+  }
+  opSaveStats(opStats);
+  opRenderStats();
+}
+
+function opRebuildTableFromState() {
+  opEls.tbody.innerHTML = "";
+  opState.guessResultsCache = [];
+  if (opState.guessIds.length === 0) return;
+  const secret = getCharacterById(opState.secretId);
+  for (const id of opState.guessIds) {
+    const guess = getCharacterById(id);
+    const result = compareOnePieceGuess(secret, guess);
+    opState.guessResultsCache.push(result);
+    opRenderGuessRow(result);
+  }
+}
+
+function opRefreshView() {
+  opSetHidden();
+  opEls.endPanel.hidden = true;
+  opEls.shareButton.hidden = true;
+  opEls.newGameButton.hidden = opMode !== "unlimited";
+  opEls.input.disabled = false;
+  opEls.submit.disabled = false;
+  opEls.input.value = "";
+  opSetFeedback("");
+  opUpdateAttemptsCounter();
+  opRenderStats();
+  opRebuildTableFromState();
+
+  if (opState.finished) {
+    opShowGameOverUI(getCharacterById(opState.secretId), opState.won);
+  }
+}
+
+function opHandleGuessSubmit(event) {
+  event.preventDefault();
+  if (opState.finished) return;
+
+  const typed = opEls.input.value.trim().toLowerCase();
+  const match = opNameList.find((p) => p.name.toLowerCase() === typed);
+  if (!match) {
+    opSetFeedback("Elige un personaje válido de la lista de sugerencias.");
+    return;
+  }
+  if (opState.guessIds.includes(match.id)) {
+    opSetFeedback("Ya has probado ese personaje.");
+    return;
+  }
+
+  const secret = getCharacterById(opState.secretId);
+  const guess = getCharacterById(match.id);
+  const result = compareOnePieceGuess(secret, guess);
+
+  opState.guessIds.push(match.id);
+  opState.guessResultsCache = opState.guessResultsCache ?? [];
+  opState.guessResultsCache.push(result);
+  opSaveState(opState);
+
+  opRenderGuessRow(result);
+  opUpdateAttemptsCounter();
+  opSetFeedback("");
+  opEls.input.value = "";
+  onePieceAutocomplete.hide();
+
+  if (result.win || opState.guessIds.length >= OP_MAX_ATTEMPTS) {
+    opState.finished = true;
+    opState.won = result.win;
+    opSaveState(opState);
+    opRecordGameResult(result.win);
+    opShowGameOverUI(secret, result.win);
+  }
+}
+
+function opSetActiveTab(activeButton) {
+  for (const btn of [opEls.tabDaily, opEls.tabUnlimited]) {
+    const isActive = btn === activeButton;
+    btn.classList.toggle("is-active", isActive);
+    btn.setAttribute("aria-selected", String(isActive));
+  }
+}
+
+function switchOnePieceMode(newMode) {
+  opMode = newMode;
+  opSetActiveTab(opMode === "daily" ? opEls.tabDaily : opEls.tabUnlimited);
+  opStats = opLoadStatsFor(opMode);
+  opEnsureState();
+  opRefreshView();
+}
+
+function startNewOnePieceGame() {
+  opState = opFreshState();
+  opSaveState(opState);
+  opRefreshView();
+}
+
+function copyOnePieceShareText() {
+  const text = opBuildShareText();
+  navigator.clipboard?.writeText(text).then(
+    () => opSetFeedback("Resultado copiado al portapapeles."),
+    () => opSetFeedback(text),
+  );
+}
+
+// ==== Selector de franquicia (Pokémon / One Piece) ====
+
+function switchFranchise(franchise) {
+  const isPokemon = franchise === "pokemon";
+  franchiseEls.franchisePokemon.classList.toggle("is-active", isPokemon);
+  franchiseEls.franchisePokemon.setAttribute("aria-selected", String(isPokemon));
+  franchiseEls.franchiseOnePiece.classList.toggle("is-active", !isPokemon);
+  franchiseEls.franchiseOnePiece.setAttribute("aria-selected", String(!isPokemon));
+  franchiseEls.pokemonApp.hidden = !isPokemon;
+  franchiseEls.onePieceApp.hidden = isPokemon;
+  franchiseEls.pokemonFooterNote.hidden = !isPokemon;
+  franchiseEls.onePieceFooterNote.hidden = isPokemon;
+
+  if (!isPokemon && !opState) {
+    switchOnePieceMode("daily");
+  }
+}
+
 let wordleAutocomplete;
 let silhouetteAutocomplete;
+let onePieceAutocomplete;
 
 async function init() {
   els.form.addEventListener("submit", handleGuessSubmit);
-  wordleAutocomplete = setupAutocomplete({ input: els.input, list: els.suggestions });
+  wordleAutocomplete = setupAutocomplete({ input: els.input, list: els.suggestions, getCandidates: () => nameList });
 
   els.silhouetteForm.addEventListener("submit", handleSilhouetteSubmit);
-  silhouetteAutocomplete = setupAutocomplete({ input: els.silhouetteInput, list: els.silhouetteSuggestions });
+  silhouetteAutocomplete = setupAutocomplete({
+    input: els.silhouetteInput,
+    list: els.silhouetteSuggestions,
+    getCandidates: () => nameList,
+  });
   els.silhouetteRevealButton.addEventListener("click", handleSilhouetteGiveUp);
   els.silhouetteNextButton.addEventListener("click", loadNewSilhouette);
 
@@ -570,6 +883,20 @@ async function init() {
   els.tabSilhouette.addEventListener("click", () => switchToSilhouette());
   els.shareButton.addEventListener("click", copyShareText);
   els.newGameButton.addEventListener("click", startNewUnlimitedGame);
+
+  opEls.form.addEventListener("submit", opHandleGuessSubmit);
+  onePieceAutocomplete = setupAutocomplete({
+    input: opEls.input,
+    list: opEls.suggestions,
+    getCandidates: () => opNameList,
+  });
+  opEls.tabDaily.addEventListener("click", () => switchOnePieceMode("daily"));
+  opEls.tabUnlimited.addEventListener("click", () => switchOnePieceMode("unlimited"));
+  opEls.shareButton.addEventListener("click", copyOnePieceShareText);
+  opEls.newGameButton.addEventListener("click", startNewOnePieceGame);
+
+  franchiseEls.franchisePokemon.addEventListener("click", () => switchFranchise("pokemon"));
+  franchiseEls.franchiseOnePiece.addEventListener("click", () => switchFranchise("onepiece"));
 
   setFeedback("Cargando lista de Pokémon...");
   try {

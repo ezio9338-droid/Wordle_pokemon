@@ -32,6 +32,38 @@ body {
   padding: 20px 12px 36px;
 }
 
+.franchise-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding-bottom: 8px;
+}
+
+.franchise-tab {
+  border: 2px solid var(--shell-dark);
+  background: white;
+  color: var(--shell-dark);
+  padding: 8px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+}
+
+.franchise-tab.is-active {
+  background: var(--shell-dark);
+  color: var(--screen-bg);
+}
+
+#pokemon-app,
+#onepiece-app {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .app-header {
   width: 100%;
   max-width: 720px;

@@ -1,16 +1,19 @@
 # Pokédle
 
-Un juego tipo Wordle para adivinar un Pokémon secreto. En cada intento se
-comparan sus tipos, generación, etapa evolutiva y color contra el Pokémon
-secreto, con el mismo esquema de colores que Wordle (verde = coincide,
-amarillo = coincide parcialmente, rojo = no coincide). No se dan pistas de
-si el secreto es "mayor" o "menor" en generación o etapa evolutiva, para
-mantener el reto.
+Una web con juegos tipo Wordle para adivinar personajes, con una pestaña de
+franquicia arriba del todo para elegir entre **Pokémon** y **One Piece**.
+Es una web estática (HTML/CSS/JS puro, sin build ni backend).
 
-Es una web estática (HTML/CSS/JS puro, sin build ni backend) que consulta los
-datos de los Pokémon en vivo a [PokeAPI](https://pokeapi.co).
+## Pokémon
 
-## Modos de juego
+En cada intento se comparan sus tipos, generación, etapa evolutiva y color
+contra el Pokémon secreto, con el mismo esquema de colores que Wordle
+(verde = coincide, amarillo = coincide parcialmente, rojo = no coincide). No
+se dan pistas de si el secreto es "mayor" o "menor" en generación o etapa
+evolutiva, para mantener el reto. Los datos de los Pokémon se consultan en
+vivo a [PokeAPI](https://pokeapi.co).
+
+### Modos de juego
 
 - **Diario**: el Pokémon secreto es el mismo para todo el mundo ese día
   (se calcula de forma determinista a partir de la fecha), con 8 intentos.
@@ -24,6 +27,20 @@ datos de los Pokémon en vivo a [PokeAPI](https://pokeapi.co).
 
 Las estadísticas (partidas jugadas, victorias, racha actual y mejor racha) se
 guardan en el propio navegador (`localStorage`), por separado para cada modo.
+
+## One Piece
+
+No existe una API pública equivalente a PokeAPI para One Piece, así que los
+datos son una lista compilada a mano (`js/onePieceData.js`) con los ~70
+personajes más conocidos hasta la saga de Egghead. En cada intento se
+compara el arco de primera aparición, la tripulación/afiliación, el tipo de
+fruta del diablo (Paramecia/Zoan/Logia/Ninguna) y la raza. Tiene modo
+**Diario** e **Ilimitado**, igual que Pokémon, pero sin modo Silueta (no hay
+una fuente de imágenes libres de derechos para los personajes, así que este
+modo se queda solo para Pokémon por ahora).
+
+Si detectas algún dato incorrecto de algún personaje, es fácil de corregir
+directamente en `js/onePieceData.js`.
 
 ## Jugar en local
 
@@ -55,12 +72,14 @@ las llamadas a PokeAPI las hace el navegador de quien juega.
 ## Estructura del proyecto
 
 ```
-index.html          Estructura de la página
-css/style.css        Estilos
-js/pokeApi.js         Llamadas a PokeAPI + caché en localStorage
-js/translations.js    Traducciones al español de tipos, colores, hábitats...
-js/game.js            Lógica pura: selección del secreto y comparación
-js/main.js            Orquestación de la UI (autocompletado, tabla, estado)
+index.html            Estructura de la página (ambas franquicias)
+css/style.css          Estilos
+js/pokeApi.js          Llamadas a PokeAPI + caché en localStorage
+js/translations.js     Traducciones al español de tipos, colores...
+js/game.js             Lógica pura de Pokémon: secreto y comparación
+js/onePieceData.js     Lista de personajes de One Piece (datos estáticos)
+js/onePieceGame.js     Lógica pura de One Piece: secreto y comparación
+js/main.js             Orquestación de la UI de ambos juegos
 ```
 
 ## Limitaciones conocidas
