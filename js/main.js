@@ -847,6 +847,7 @@ function copyOnePieceShareText() {
 
 function switchFranchise(franchise) {
   const isPokemon = franchise === "pokemon";
+  document.body.classList.toggle("theme-onepiece", !isPokemon);
   franchiseEls.franchisePokemon.classList.toggle("is-active", isPokemon);
   franchiseEls.franchisePokemon.setAttribute("aria-selected", String(isPokemon));
   franchiseEls.franchiseOnePiece.classList.toggle("is-active", !isPokemon);

@@ -64,6 +64,11 @@ body {
   align-items: center;
 }
 
+#pokemon-app[hidden],
+#onepiece-app[hidden] {
+  display: none;
+}
+
 .app-header {
   width: 100%;
   max-width: 720px;
@@ -459,4 +464,174 @@ body {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+/* ==== One Piece: tema "Cartel de Se Busca" ==== */
+
+:root {
+  --op-bg-top: #f2e4bd;
+  --op-bg-bottom: #c9ab72;
+  --op-ink: #3b2712;
+  --op-accent: #5b1a13;
+  --op-green: #3d6b34;
+  --op-red: #8b1e1e;
+  --op-panel-bg: rgba(255, 255, 255, 0.18);
+  --op-input-bg: #f7ecd2;
+  --font-op-display: "Rye", serif;
+  --font-op-body: "Special Elite", "Courier New", monospace;
+}
+
+body.theme-onepiece {
+  background: radial-gradient(ellipse at top, var(--op-bg-top) 0%, var(--op-bg-bottom) 100%);
+}
+
+body.theme-onepiece .app-footer {
+  color: var(--op-ink);
+}
+
+body.theme-onepiece .app-footer a {
+  color: var(--op-accent);
+}
+
+#onepiece-app {
+  font-family: var(--font-op-body);
+  color: var(--op-ink);
+}
+
+#onepiece-app .device-lights {
+  display: none;
+}
+
+#onepiece-app .app-main {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 18px 12px;
+}
+
+#onepiece-app .app-header {
+  background: transparent;
+  border: 3px double var(--op-ink);
+  border-radius: 6px;
+  margin: 0 12px;
+  padding: 18px 16px;
+}
+
+#onepiece-app .app-header h1 {
+  font-family: var(--font-op-display);
+  color: var(--op-accent);
+  text-shadow: none;
+  letter-spacing: 0.05em;
+}
+
+#onepiece-app .subtitle {
+  color: var(--op-ink);
+  opacity: 0.85;
+}
+
+#onepiece-app .mode-tab {
+  border: 2px solid var(--op-ink);
+  background: transparent;
+  color: var(--op-ink);
+  font-family: var(--font-op-body);
+}
+
+#onepiece-app .mode-tab.is-active {
+  background: var(--op-ink);
+  color: var(--op-bg-top);
+}
+
+#onepiece-app .reveal-card,
+#onepiece-app .search-section,
+#onepiece-app .table-section,
+#onepiece-app .end-panel,
+#onepiece-app .stats-panel {
+  background: var(--op-panel-bg);
+  border: 2px dashed var(--op-ink);
+  border-radius: 6px;
+  box-shadow: none;
+}
+
+#onepiece-app .reveal-placeholder,
+#onepiece-app .reveal-name,
+#onepiece-app .end-message {
+  font-family: var(--font-op-display);
+  color: var(--op-accent);
+}
+
+#onepiece-app .text-input {
+  background: var(--op-input-bg);
+  border: 1px solid var(--op-ink);
+  color: var(--op-ink);
+  font-family: var(--font-op-body);
+}
+
+#onepiece-app .primary-button,
+#onepiece-app .end-actions button {
+  background: var(--op-accent);
+  border: 2px solid var(--op-ink);
+  color: var(--op-bg-top);
+  font-family: var(--font-op-body);
+}
+
+#onepiece-app .suggestions-list {
+  background: var(--op-input-bg);
+  border: 1px solid var(--op-ink);
+}
+
+#onepiece-app .suggestions-list li.is-active,
+#onepiece-app .suggestions-list li:hover {
+  background: var(--op-green);
+  color: var(--op-bg-top);
+}
+
+#onepiece-app .attempts-counter,
+#onepiece-app .feedback-message {
+  color: var(--op-ink);
+}
+
+#onepiece-app .feedback-message.is-success {
+  color: var(--op-green);
+}
+
+#onepiece-app #op-guesses-table th {
+  color: var(--op-ink);
+  opacity: 0.75;
+}
+
+#onepiece-app .cell {
+  border: 2px solid var(--op-ink);
+  border-radius: 4px;
+  font-family: var(--font-op-body);
+}
+
+#onepiece-app .cell.status-green {
+  background: var(--op-input-bg);
+  border-color: var(--op-green);
+  color: var(--op-green);
+}
+
+#onepiece-app .cell.status-red {
+  background: var(--op-input-bg);
+  border-color: var(--op-red);
+  color: var(--op-red);
+}
+
+#onepiece-app .stats-panel h2 {
+  font-family: var(--font-op-display);
+  color: var(--op-ink);
+}
+
+#onepiece-app .stats-grid > div {
+  background: var(--op-input-bg);
+  border: 1px solid var(--op-ink);
+}
+
+#onepiece-app .stats-grid span {
+  font-family: var(--font-op-display);
+  color: var(--op-accent);
+}
+
+#onepiece-app .stats-grid small {
+  color: var(--op-ink);
 }
