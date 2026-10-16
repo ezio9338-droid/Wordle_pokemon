@@ -2,35 +2,25 @@
 // cada intento contra él. No toca el DOM ni hace fetch directamente.
 
 import { MAX_DEX } from "./pokeApi.js";
+import { dailyItem, randomItemExcluding } from "./random.js";
 
 export const MAX_ATTEMPTS = 8;
 
-function hashString(str) {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash * 31 + str.charCodeAt(i)) >>> 0;
-  }
-  return hash;
-}
+const ALL_IDS = Array.from({ length: MAX_DEX }, (_, i) => i + 1);
 
-/** Fecha (UTC) en formato YYYY-MM-DD, usada como semilla del reto diario. */
+/** Fecha (UTC) en formato YYYY-MM-DD, usada para saber si cambió el día. */
 export function todayKey(date = new Date()) {
   return date.toISOString().slice(0, 10);
 }
 
-/** Id determinista 1..MAX_DEX a partir de la fecha: mismo secreto todo el día. */
+/** Id del día 1..MAX_DEX: mismo secreto para todos, sin repetir hasta recorrer la Pokédex. */
 export function getDailyPokemonId(date = new Date()) {
-  const seed = hashString(todayKey(date));
-  return (seed % MAX_DEX) + 1;
+  return dailyItem(ALL_IDS, "pokemon", date);
 }
 
-/** Id aleatorio 1..MAX_DEX para el modo ilimitado. */
-export function getRandomPokemonId(excludeId = null) {
-  let id = excludeId;
-  while (id === excludeId) {
-    id = Math.floor(Math.random() * MAX_DEX) + 1;
-  }
-  return id;
+/** Id aleatorio 1..MAX_DEX que no esté en `excludeIds`, o null si ya han salido todos. */
+export function getRandomPokemonId(excludeIds = []) {
+  return randomItemExcluding(ALL_IDS, excludeIds);
 }
 
 function compareTypeSlots(guessTypes, secretTypes) {

@@ -2,35 +2,22 @@
 // llamadas a red (los datos ya están en memoria en onePieceData.js).
 
 import { CHARACTERS } from "./onePieceData.js";
+import { dailyItem, randomItemExcluding } from "./random.js";
 
 export const MAX_ATTEMPTS = 8;
-
-function hashString(str) {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash * 31 + str.charCodeAt(i)) >>> 0;
-  }
-  return hash;
-}
 
 export function todayKey(date = new Date()) {
   return date.toISOString().slice(0, 10);
 }
 
-/** Personaje determinista por fecha: mismo secreto todo el día para todos. */
+/** Personaje del día: mismo secreto para todos, sin repetir hasta recorrer la lista. */
 export function getDailyCharacter(date = new Date()) {
-  const seed = hashString(`onepiece:${todayKey(date)}`);
-  return CHARACTERS[seed % CHARACTERS.length];
+  return dailyItem(CHARACTERS, "onepiece", date);
 }
 
-/** Personaje aleatorio para el modo ilimitado. */
-export function getRandomCharacter(excludeId = null) {
-  if (CHARACTERS.length === 1) return CHARACTERS[0];
-  let character = null;
-  while (!character || character.id === excludeId) {
-    character = CHARACTERS[Math.floor(Math.random() * CHARACTERS.length)];
-  }
-  return character;
+/** Personaje aleatorio cuyo id no esté en `excludeIds`, o null si ya han salido todos. */
+export function getRandomCharacter(excludeIds = []) {
+  return randomItemExcluding(CHARACTERS, excludeIds, (c) => c.id);
 }
 
 export function getCharacterById(id) {

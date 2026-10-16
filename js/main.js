@@ -14,6 +14,31 @@ import { CHARACTERS as ONE_PIECE_CHARACTERS } from "./onePieceData.js";
 const STORAGE_PREFIX = "pokedle:v1:";
 const OP_STORAGE_PREFIX = "onepiece:v1:";
 
+/**
+ * Sorteo "de bolsa" para los modos aleatorios: se guardan los ids que ya han
+ * salido y `draw(seen)` elige uno que no esté entre ellos. Cuando no quedan,
+ * empieza una vuelta nueva (sin repetir el último que salió).
+ */
+function drawWithoutRepeats(seenKey, draw) {
+  let seen = [];
+  try {
+    seen = JSON.parse(localStorage.getItem(seenKey)) ?? [];
+  } catch {
+    /* sin historial: se sortea entre todos */
+  }
+  let picked = draw(seen);
+  if (picked === null) {
+    seen = seen.slice(-1);
+    picked = draw(seen) ?? draw([]);
+  }
+  try {
+    localStorage.setItem(seenKey, JSON.stringify([...seen, picked]));
+  } catch {
+    /* ignorar */
+  }
+  return picked;
+}
+
 const els = {
   tabDaily: document.getElementById("tab-daily"),
   tabUnlimited: document.getElementById("tab-unlimited"),
@@ -148,7 +173,8 @@ function saveStats(statsValue) {
 }
 
 function freshState() {
-  const secretId = mode === "daily" ? getDailyPokemonId() : getRandomPokemonId();
+  const secretId =
+    mode === "daily" ? getDailyPokemonId() : drawWithoutRepeats(storageKey("seen"), getRandomPokemonId);
   return {
     date: todayKey(),
     secretId,
@@ -545,7 +571,7 @@ async function loadNewSilhouette() {
   els.silhouettePlaceholder.hidden = false;
 
   try {
-    const id = getRandomPokemonId(silhouetteTarget?.id ?? null);
+    const id = drawWithoutRepeats(`${STORAGE_PREFIX}silhouette:seen`, getRandomPokemonId);
     silhouetteTarget = await getPokemon(id);
     els.silhouettePlaceholder.hidden = true;
     els.silhouetteSprite.hidden = false;
@@ -651,7 +677,12 @@ function opSaveStats(value) {
 }
 
 function opFreshState() {
-  const secret = opMode === "daily" ? getDailyCharacter() : getRandomCharacter();
+  const secret =
+    opMode === "daily"
+      ? getDailyCharacter()
+      : getCharacterById(
+          drawWithoutRepeats(opStorageKey("seen"), (seen) => getRandomCharacter(seen)?.id ?? null),
+        );
   return { date: opTodayKey(), secretId: secret.id, guessIds: [], finished: false, won: false };
 }
 

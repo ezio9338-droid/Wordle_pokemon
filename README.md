@@ -15,12 +15,16 @@ vivo a [PokeAPI](https://pokeapi.co).
 
 ### Modos de juego
 
-- **Diario**: el Pokémon secreto es el mismo para todo el mundo ese día
-  (se calcula de forma determinista a partir de la fecha), con 8 intentos.
+- **Diario**: el Pokémon secreto es el mismo para todo el mundo ese día, con
+  8 intentos. La Pokédex se baraja una vez con una semilla fija y cada día
+  (UTC) avanza una posición, así que no se repite ningún Pokémon hasta haber
+  pasado por los 1025.
 - **Ilimitado**: Pokémon aleatorio, puedes empezar una partida nueva cuando
-  quieras con el botón "Nueva partida".
+  quieras con el botón "Nueva partida". El navegador recuerda los que ya te
+  han salido y no los repite hasta que hayas visto toda la Pokédex.
 - **Silueta**: modo de práctica para aprenderte los nombres. Se muestra la
-  silueta en negro de un Pokémon aleatorio (de toda la Pokédex) y hay que
+  silueta en negro de un Pokémon aleatorio (de toda la Pokédex, sin repetir
+  hasta haberlos visto todos) y hay que
   escribir su nombre, sin límite de intentos. Al acertar o rendirte se
   revela la imagen a color junto con su nombre y generación, para ir
   ubicando qué Pokémon son de qué generación.
@@ -35,7 +39,8 @@ datos son una lista compilada a mano (`js/onePieceData.js`) con más de 110
 personajes conocidos hasta la saga de Egghead. En cada intento se compara el
 arco de primera aparición, la tripulación/afiliación, el tipo de fruta del
 diablo (Paramecia/Zoan/Logia/Ninguna), la raza y si el personaje sigue
-vivo o no. Tiene modo **Diario** e **Ilimitado**, igual que Pokémon, pero
+vivo o no. Tiene modo **Diario** e **Ilimitado**, igual que Pokémon (también
+sin repetir personajes hasta recorrer la lista entera), pero
 sin modo Silueta (no hay una fuente de imágenes libres de derechos para los
 personajes, así que este modo se queda solo para Pokémon por ahora).
 
